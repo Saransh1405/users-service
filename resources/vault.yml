@@ -2,8 +2,3 @@
 token: ""
 unsealKeys: [""]
 address: "https://vault.example.com:8200"
-
-# #vault in local mode
-# token: hvs.8WNHBP3DMIhYGZKm6vgfP9fC
-# address: http://127.0.0.1:8200
-# unsealKeys: ["KpApNpF2RENBhy6iUiLU/WBjFKRKU58BGzIYUngJ2vA="]
