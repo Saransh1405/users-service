@@ -1,0 +1,9 @@
+#vault in production mode
+token: hvs.AMb7KxznWgMOXnogg6kpjLKl
+unsealKeys: ["pNsdEhoVg5Tqs4zf33ZjcRAu+6/5kADGEhwWEdkzolA="]
+address: http://13.235.75.148:8200
+
+# #vault in local mode
+# token: hvs.8WNHBP3DMIhYGZKm6vgfP9fC
+# address: http://127.0.0.1:8200
+# unsealKeys: ["KpApNpF2RENBhy6iUiLU/WBjFKRKU58BGzIYUngJ2vA="]
