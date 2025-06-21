@@ -1,4 +1,0 @@
-#vault in production mode
-token: ""
-unsealKeys: [""]
-address: "https://vault.example.com:8200"
