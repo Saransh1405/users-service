@@ -77,6 +77,8 @@ const (
 	UserNotFoundMessage                  = "errors.UserNotFound"
 	UserNotActiveMessage                 = "errors.UserNotActive"
 	UserAlreadyExistsMessage             = "errors.UserAlreadyExists"
+	PhoneNumberValidationFailed          = "errors.PhoneNumberValidationFailed"
+	EmailAlreadyExists                   = "errors.EmailAlreadyExists"
 	SupportedLanguageNotFoundMessage     = "errors.SupportedLanguageNotFound"
 	CurrencyNotFoundMessage              = "errors.CurrencyNotFound"
 	StateTaxNotFoundMessage              = "errors.StateTaxNotFound"

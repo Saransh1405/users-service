@@ -8,3 +8,8 @@ const (
 	MongoAPIUsagesCollection                = "apiUsages"
 	MongoTimeout                            = 30
 )
+
+// MongoDB constants
+const (
+	MongoUserCollection = "users"
+)

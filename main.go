@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"users-service/api"
 	"users-service/constants"
-	"users-service/library/postgres"
+	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
 
@@ -43,8 +43,11 @@ func main() {
 	// setup http client
 	initHTTPClient()
 
-	// Connect a postgres
-	postgres.InitPostgresDB(ctx)
+	// // Connect a postgres
+	// postgres.InitPostgresDB(ctx)
+
+	// Connect to MongoDB
+	mongoDb.InitMongoDB()
 
 	// Start router and Use middleware
 	startRouter(ctx)

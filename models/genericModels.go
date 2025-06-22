@@ -101,12 +101,12 @@ type TokenResponse struct {
 } //@name TokenResponse
 
 type StatusLogs struct {
-	Status           Status    `gorm:"column:status;type:status" json:"status" example:"active"`            // active, inactive , suspended, deleted
-	ActionByUserRole string    `gorm:"column:action_by_user_role" json:"actionByUserRole" example:"admin"`  // admin, user
-	ActionByUserId   string    `gorm:"column:action_by_user_id" json:"actionByUserId" example:"1"`          // 1, 2
-	Notes            string    `gorm:"column:notes" json:"note" example:"xyz"`                              // xyz
-	Timestamp        time.Time `gorm:"column:timestamp" json:"timestamp" example:"2020-09-01T00:00:00Z"`    // 2020-09-01T00:00:00Z
-	EntityId         uuid.UUID `gorm:"column:entity_id" json:"entityId" example:"5f5f5f5f5f5f5f5f5f5f5f5f"` // 5f5f5f5f5f5f5f5f5f5f5f5f
+	Status           string `bson:"status" json:"status" example:"active"`                       // active, inactive, suspended, deleted
+	ActionByUserRole string `bson:"actionByUserRole" json:"actionByUserRole" example:"admin"`    // admin, user
+	ActionByUserId   string `bson:"actionByUserId" json:"actionByUserId" example:"1"`            // 1, 2
+	Notes            string `bson:"notes" json:"notes" example:"xyz"`                            // xyz
+	Timestamp        int64  `bson:"timestamp" json:"timestamp" example:"2020-09-01T00:00:00Z"`   // 2020-09-01T00:00:00Z
+	EntityId         string `bson:"entityId" json:"entityId" example:"5f5f5f5f5f5f5f5f5f5f5f5f"` // MongoDB ObjectID as string
 } //@name StatusLogs
 
 type Logs struct {

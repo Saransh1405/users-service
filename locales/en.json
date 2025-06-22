@@ -26,6 +26,8 @@
         "BusinessIdIsRequired": "businessId is required.",
         "BrandIdIsRequired": "brandId is required.",
         "InvalidOTP": "invalid otp provided",
-        "UserAlreadyExists" : "user with this phone number already exists"
+        "UserAlreadyExists": "user with this phone number already exists",
+        "PhoneNumberValidationFailed": "Phone number already exists",
+        "EmailAlreadyExists": "Email already exists"
     }
 }

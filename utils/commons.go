@@ -196,7 +196,10 @@ func ErrorBasedOnResponse(ctx *gin.Context, msg string, respType int, err error)
 		SendConflict(ctx, constants.WLDataConflictCode, msg, respType, nil)
 
 	//429
-	case errors.New(constants.TooManyRequestsMessage).Error():
+	case errors.New(constants.TooManyRequestsMessage).Error(),
+		errors.New(constants.PhoneNumberValidationFailed).Error(),
+		errors.New(constants.EmailAlreadyExists).Error(),
+		errors.New(constants.UserAlreadyExistsMessage).Error():
 		SendRateLimit(ctx, msg, constants.WLRateLimitCode, respType, err)
 
 	}

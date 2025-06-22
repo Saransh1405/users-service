@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 	"users-service/constants"
+	"users-service/library/mongoDb"
 	"users-service/library/postgres"
 	"users-service/logger"
 	"users-service/models"
@@ -16,7 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.uber.org/zap"
 )
 
@@ -62,21 +63,6 @@ func GeneratePassword() string {
 		inRune[i], inRune[j] = inRune[j], inRune[i]
 	})
 	return string(inRune)
-}
-
-func InsertLogsIntoStatusLogs(status models.Status, notes, actionByUserRole, actionByUserId string, entityId uuid.UUID) {
-
-	var statusLogs models.StatusLogs
-
-	statusLogs.Status = status
-	statusLogs.ActionByUserRole = actionByUserRole
-	statusLogs.ActionByUserId = actionByUserId
-	statusLogs.EntityId = entityId
-	statusLogs.Notes = notes
-	statusLogs.Timestamp = time.Now()
-
-	postgres.DB.Create(&statusLogs)
-
 }
 
 func ValidateRequestData(ctx *gin.Context, request interface{}, b binding.Binding) error {
@@ -193,4 +179,42 @@ func AddLogs(trigger, enitity, enitityId, clientName, actionById string, oldData
 		fmt.Printf("insert.Error: %v\n", insert.Error)
 	}
 
+}
+
+func ValidateEmail(ctx *gin.Context, email string) (bool, error) {
+	//user col
+	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
+
+	if email == "" {
+		return false, errors.New("email is empty")
+	}
+
+	filter := bson.M{"email": email}
+
+	// Check if the email is already in use
+	exists, err := userCol.CountDocuments(ctx, filter)
+	if err != nil {
+		return false, fmt.Errorf("error checking email existence: %w", err)
+	}
+
+	return exists > 0, nil
+}
+
+func ValidatePhoneNumber(ctx *gin.Context, countryCode, phone string) (bool, error) {
+	//user col
+	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
+
+	if countryCode == "" || phone == "" {
+		return false, errors.New("country code or phone number is empty")
+	}
+
+	filter := bson.M{"phone": phone, "countryCode": countryCode}
+
+	// Check if the phone number is already in use
+	exists, err := userCol.CountDocuments(ctx, filter)
+	if err != nil {
+		return false, fmt.Errorf("error checking phone number existence: %w", err)
+	}
+
+	return exists > 0, nil
 }

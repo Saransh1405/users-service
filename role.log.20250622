@@ -1,0 +1,65 @@
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"dff36499-4ed2-11f0-962c-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"dff36499-4ed2-11f0-962c-ca9402a7dd3b","requestId":"dff36499-4ed2-11f0-962c-ca9402a7dd3b","statusCode":404,"Latency":2,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"02a383f8-4ed3-11f0-962c-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"02a383f8-4ed3-11f0-962c-ca9402a7dd3b","requestId":"02a383f8-4ed3-11f0-962c-ca9402a7dd3b","statusCode":404,"Latency":0,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8080"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"66b9c92f-4ed3-11f0-9a17-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"66b9c92f-4ed3-11f0-9a17-ca9402a7dd3b","requestId":"66b9c92f-4ed3-11f0-9a17-ca9402a7dd3b","statusCode":404,"Latency":0,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"8718d7f1-4ed3-11f0-9a17-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"8718d7f1-4ed3-11f0-9a17-ca9402a7dd3b","requestId":"8718d7f1-4ed3-11f0-9a17-ca9402a7dd3b","statusCode":404,"Latency":0,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"8b2d0871-4ed3-11f0-9a17-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"8b2d0871-4ed3-11f0-9a17-ca9402a7dd3b","requestId":"8b2d0871-4ed3-11f0-9a17-ca9402a7dd3b","statusCode":404,"Latency":0,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"cc56ee12-4ed3-11f0-9a17-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/library/mongoDb.InitMongoDB","msg":"Configuration is missing for mongodb","error":"configuration is missing for mongodb"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8080"}
+{"level":"ERROR","time":"time.UnixDate","method":"main.startRouter","msg":"external service failure error","error":"listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8080"}
+{"level":"ERROR","time":"time.UnixDate","method":"main.startRouter","msg":"external service failure error","error":"listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8080"}
+{"level":"ERROR","time":"time.UnixDate","method":"main.startRouter","msg":"external service failure error","error":"listen tcp :8080: bind: Only one usage of each socket address (protocol/network address/port) is normally permitted."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"dd8a2963-4f40-11f0-88b8-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"dd8a2963-4f40-11f0-88b8-ca9402a7dd3b","requestId":"dd8a2963-4f40-11f0-88b8-ca9402a7dd3b","statusCode":200,"Latency":37,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/business/signup.Post.func1","msg":"Email already exists","requestId":"dd8a2963-4f40-11f0-88b8-ca9402a7dd3b"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"908ae0ef-4f43-11f0-9b0d-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/business/signup.Post.func1","msg":"Email already exists","requestId":"908ae0ef-4f43-11f0-9b0d-ca9402a7dd3b"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"908ae0ef-4f43-11f0-9b0d-ca9402a7dd3b","requestId":"908ae0ef-4f43-11f0-9b0d-ca9402a7dd3b","statusCode":200,"Latency":5,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"3fa307f3-4f44-11f0-a6ce-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"3fa307f3-4f44-11f0-a6ce-ca9402a7dd3b","requestId":"3fa307f3-4f44-11f0-a6ce-ca9402a7dd3b","statusCode":200,"Latency":5,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"5544e123-4f44-11f0-a6ce-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"5544e123-4f44-11f0-a6ce-ca9402a7dd3b","requestId":"5544e123-4f44-11f0-a6ce-ca9402a7dd3b","statusCode":200,"Latency":1,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/business/signup.Post.func1","msg":"Email already exists","requestId":"5544e123-4f44-11f0-a6ce-ca9402a7dd3b"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"2155a87d-4f45-11f0-9b4d-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"2155a87d-4f45-11f0-9b4d-ca9402a7dd3b","requestId":"2155a87d-4f45-11f0-9b4d-ca9402a7dd3b","statusCode":200,"Latency":3,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"24984f7e-4f45-11f0-9b4d-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/business/signup.Post","msg":"Email already exists","requestId":"24984f7e-4f45-11f0-9b4d-ca9402a7dd3b"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/api/signup.Post","msg":"external service failure error","requestId":"24984f7e-4f45-11f0-9b4d-ca9402a7dd3b","error":"email already exists"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"24984f7e-4f45-11f0-9b4d-ca9402a7dd3b","requestId":"24984f7e-4f45-11f0-9b4d-ca9402a7dd3b","statusCode":500,"Latency":2,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/business/signup.Post","msg":"Phone number already exists","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/api/signup.Post","msg":"external service failure error","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","error":"phone number already exists"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","statusCode":500,"Latency":2,"clientIP":"::1","error":""}
