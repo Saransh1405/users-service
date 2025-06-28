@@ -14,12 +14,9 @@ type LoginWithOTPRequest struct {
 } // @name LoginWithOTPRequest
 
 type LoginResponse struct {
-	AccessToken      string `json:"access_token"`
-	ExpiresIn        int    `json:"expires_in"`
-	NotBeforePolicy  int    `json:"not-before-policy"`
-	RefreshExpiresIn int    `json:"refresh_expires_in"`
-	RefreshToken     string `json:"refresh_token"`
-	Scope            string `json:"scope"`
-	SessionState     string `json:"session_state"`
-	TokenType        string `json:"token_type"`
+	User             Users  `bson:"user" json:"user"`
+	AccessToken      string `json:"accessToken,omitempty"`
+	ExpiresIn        int64  `json:"expiresIn,omitempty"`
+	RefreshExpiresIn int    `json:"refreshExpiresIn,omitempty"`
+	RefreshToken     string `json:"refreshToken,omitempty"`
 } // @name LoginResponse

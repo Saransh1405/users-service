@@ -1,34 +1,68 @@
-naruto:
-	@./scripts/naruto.sh
+.PHONY: help build run test clean proto client
 
-checkGO:
-	@./scripts/checkGO.sh
+# Default target
+help:
+	@echo "Available commands:"
+	@echo "  make proto     - Generate protocol buffer code"
+	@echo "  make build     - Build the application"
+	@echo "  make run       - Run the server (REST + gRPC)"
+	@echo "  make client    - Run the gRPC client example"
+	@echo "  make test      - Run tests"
+	@echo "  make clean     - Clean generated files"
+	@echo "  make deps      - Install dependencies"
 
-checkGIT:
-	@./scripts/checkGIT.sh
+# Generate protocol buffer code
+proto:
+	@echo "Generating protocol buffer code..."
+	@chmod +x scripts/generate-proto.sh
+	@./scripts/generate-proto.sh
 
-checkSwagger:
-	@./scripts/checkSwagger.sh
+# Build the application
+build: proto
+	@echo "Building application..."
+	@go build -o bin/users-service main.go
 
-checkGolangCILint:
-	@./scripts/checkGolangCILint.sh
+# Run the server
+run: proto
+	@echo "Starting server (REST + gRPC)..."
+	@go run main.go
 
-doctor: naruto checkGO checkGIT checkPreCommit checkSwagger checkGolangCILint checkGSED
+# Run the gRPC client example
+client: proto
+	@echo "Running gRPC client example..."
+	@go run examples/grpc_client.go
 
-init: naruto
-	@./scripts/init.sh
+# Run tests
+test:
+	@echo "Running tests..."
+	@go test ./...
 
-install: naruto
-	@./scripts/install.sh
+# Clean generated files
+clean:
+	@echo "Cleaning generated files..."
+	@rm -f proto/*.pb.go
+	@rm -f bin/users-service
 
-swagger: naruto
-	@./scripts/swagger.sh
+# Install dependencies
+deps:
+	@echo "Installing dependencies..."
+	@go mod tidy
+	@go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	@go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	@go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 
-verify: naruto
-	@./scripts/verify.sh
+# Install protoc (macOS)
+install-protoc-mac:
+	@echo "Installing protoc on macOS..."
+	@brew install protobuf
 
-test: naruto
-	@./scripts/test.sh
+# Install protoc (Ubuntu/Debian)
+install-protoc-ubuntu:
+	@echo "Installing protoc on Ubuntu/Debian..."
+	@sudo apt-get update
+	@sudo apt-get install -y protobuf-compiler
 
-build: naruto
-	@./scripts/build.sh
+# Install protoc (Windows)
+install-protoc-windows:
+	@echo "Installing protoc on Windows..."
+	@choco install protoc

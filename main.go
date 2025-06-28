@@ -49,8 +49,9 @@ func main() {
 	// Connect to MongoDB
 	mongoDb.InitMongoDB()
 
-	// Start router and Use middleware
+	// start router
 	startRouter(ctx)
+
 }
 
 func initConfigs() {

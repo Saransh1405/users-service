@@ -63,3 +63,31 @@
 {"level":"ERROR","time":"time.UnixDate","method":"users-service/business/signup.Post","msg":"Phone number already exists","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b"}
 {"level":"ERROR","time":"time.UnixDate","method":"users-service/api/signup.Post","msg":"external service failure error","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","error":"phone number already exists"}
 {"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","requestId":"28e91312-4f45-11f0-9b4d-ca9402a7dd3b","statusCode":500,"Latency":2,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"4ec1be04-4f70-11f0-b84c-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/utils/helperfunctions.ValidateRequestData","msg":"Binding fail","requestId":"4ec1be04-4f70-11f0-b84c-ca9402a7dd3b","error":"Key: 'UserPostRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"4ec1be04-4f70-11f0-b84c-ca9402a7dd3b","requestId":"4ec1be04-4f70-11f0-b84c-ca9402a7dd3b","statusCode":400,"Latency":1,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"5a59a315-4f70-11f0-b84c-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"5a59a315-4f70-11f0-b84c-ca9402a7dd3b","requestId":"5a59a315-4f70-11f0-b84c-ca9402a7dd3b","statusCode":200,"Latency":140,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"fe855d6c-4f70-11f0-a491-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/business/login.Login","msg":"Failed to generate JWT token","requestId":"fe855d6c-4f70-11f0-a491-ca9402a7dd3b"}
+{"level":"ERROR","time":"time.UnixDate","method":"users-service/api/login.Post","msg":"external service failure error","requestId":"fe855d6c-4f70-11f0-a491-ca9402a7dd3b","error":"failed to generate authentication token"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"fe855d6c-4f70-11f0-a491-ca9402a7dd3b","requestId":"fe855d6c-4f70-11f0-a491-ca9402a7dd3b","statusCode":500,"Latency":74,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"a01c96f5-4f72-11f0-ad96-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"a01c96f5-4f72-11f0-ad96-ca9402a7dd3b","requestId":"a01c96f5-4f72-11f0-ad96-ca9402a7dd3b","statusCode":200,"Latency":80,"clientIP":"::1","error":""}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.LoadBundle.func1","msg":"Language List [en]"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"startRequest","requestId":"8c7412b1-4f73-11f0-b158-ca9402a7dd3b","startTime":"time.UnixDate"}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter.Logger.func2","msg":"summary","requestId":"8c7412b1-4f73-11f0-b158-ca9402a7dd3b","requestId":"8c7412b1-4f73-11f0-b158-ca9402a7dd3b","statusCode":200,"Latency":60,"clientIP":"::1","error":""}

@@ -4,20 +4,21 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
-	"users-service/library/postgres"
 	"users-service/logger"
-	"users-service/models"
 	"users-service/utils"
 	"users-service/utils/localization"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/zap"
 )
 
@@ -143,44 +144,6 @@ func GenerateID() string {
 	return string(inRune)
 }
 
-func CheckUserAlreadyExistsForProperty(countryCode, phone, email string) (bool, error) {
-
-	var foundUser models.Users
-
-	find := postgres.DB.Where("country_code = ? AND phone = ? AND email = ?", countryCode, phone, email).First(&foundUser)
-
-	if find.RowsAffected == 0 {
-		return false, nil
-	}
-
-	if find.Error != nil {
-		return false, find.Error
-	}
-
-	return true, nil
-}
-
-func AddLogs(trigger, enitity, enitityId, clientName, actionById string, oldData, newData interface{}) {
-
-	insertLogs := models.Logs{
-		Trigger:    trigger,
-		Entity:     enitity,
-		EntityId:   enitityId,
-		ClientName: clientName,
-		ActionById: actionById,
-		OldData:    oldData,
-		NewData:    newData,
-		Timestamp:  time.Now(),
-	}
-
-	insert := postgres.DB.Create(&insertLogs)
-
-	if insert.Error != nil {
-		fmt.Printf("insert.Error: %v\n", insert.Error)
-	}
-
-}
-
 func ValidateEmail(ctx *gin.Context, email string) (bool, error) {
 	//user col
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
@@ -217,4 +180,47 @@ func ValidatePhoneNumber(ctx *gin.Context, countryCode, phone string) (bool, err
 	}
 
 	return exists > 0, nil
+}
+
+// JWT Claims structure
+type Claims struct {
+	UserID string `json:"user_id"`
+	Email  string `json:"email"`
+	jwt.RegisteredClaims
+} // @claims
+
+// generateJWT creates a new JWT token for the user
+func GenerateJWT(userID primitive.ObjectID, email string) (string, int64, error) {
+	// Get JWT secret from environment variable
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		return "", 0, errors.New("JWT_SECRET environment variable not set")
+	}
+
+	// Set token expiration time (24 hours from now)
+	expirationTime := time.Now().Add(24 * time.Hour)
+
+	// Create the JWT claims
+	claims := &Claims{
+		UserID: userID.Hex(),
+		Email:  email,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			NotBefore: jwt.NewNumericDate(time.Now()),
+			Issuer:    "users-service",
+			Subject:   userID.Hex(),
+		},
+	}
+
+	// Create token with claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// Sign the token with secret
+	tokenString, err := token.SignedString([]byte(jwtSecret))
+	if err != nil {
+		return "", 0, err
+	}
+
+	return tokenString, expirationTime.UnixMilli(), nil
 }

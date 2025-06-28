@@ -2,16 +2,15 @@ package constants
 
 // config names
 const (
-	LoggerConfig      = "logger"
-	ApplicationConfig = "application"
-	LanguageConfig    = "language"
-	MongoConfig       = "mongo"
-	VaultConfig       = "vault"
-	RedisConfig       = "redis"
-	PostgresConfig    = "postgres"
-	ImportConfig      = "import"
-	NovuConfig        = "novu"
-
+	LoggerConfig        = "logger"
+	ApplicationConfig   = "application"
+	LanguageConfig      = "language"
+	MongoConfig         = "mongo"
+	VaultConfig         = "vault"
+	RedisConfig         = "redis"
+	PostgresConfig      = "postgres"
+	ImportConfig        = "import"
+	NovuConfig          = "novu"
 	AuthorizationHeader = "Authorization"
 )
 
@@ -32,6 +31,7 @@ const (
 	ServerHost                           = "server.host"
 	ServerPort                           = "server.port"
 	MongoUrlKey                          = "url"
+	JwtSecret                            = "jwt.secret"
 	MongoDatabaseKey                     = "database"
 )
 

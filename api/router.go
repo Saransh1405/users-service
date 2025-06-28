@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"users-service/api/login"
 	"users-service/api/signup"
 	"users-service/constants"
 	"users-service/utils"
@@ -52,8 +53,8 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 
 	unAuthRoutes := router.Group("v1")
 	{
-		// // Handle the POST requests at /v1/login
-		// unAuthRoutes.POST(constants.Login, login.Post)
+		// Handle the POST requests at /v1/login
+		unAuthRoutes.POST(constants.Login, login.Post)
 
 		// // Handle the POST requests at /v1/logout
 		// unAuthRoutes.POST(constants.Logout, logout.Post)

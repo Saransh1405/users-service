@@ -1,0 +1,3 @@
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}

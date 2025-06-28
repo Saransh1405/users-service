@@ -52,7 +52,7 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 	// Hash password
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Error("Password hashing failed")
+		log.With(zap.Error(err)).Error("Password hashing failed")
 		return nil, err
 	}
 
