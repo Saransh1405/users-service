@@ -4,13 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
-	"os"
 	"strings"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
+	"users-service/utils/configs"
 	"users-service/utils/localization"
 
 	"github.com/gin-gonic/gin"
@@ -191,11 +191,16 @@ type Claims struct {
 
 // generateJWT creates a new JWT token for the user
 func GenerateJWT(userID primitive.ObjectID, email string) (string, int64, error) {
-	// Get JWT secret from environment variable
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		return "", 0, errors.New("JWT_SECRET environment variable not set")
+	logger := logger.GetLoggerWithoutContext()
+
+	// get application config
+	applicationConfig, err1 := configs.Get(constants.ApplicationConfig)
+	if err1 != nil {
+		logger.With(zap.Error(err1)).Error(constants.BindingFailedErrr)
 	}
+
+	// Get JWT secret from environment variable
+	jwtSecret := applicationConfig.GetString(constants.JWT_SECRET)
 
 	// Set token expiration time (24 hours from now)
 	expirationTime := time.Now().Add(24 * time.Hour)

@@ -19,7 +19,7 @@ import (
 // takes user data and signs up the user in the db
 func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, error) {
 	//get the logger
-	log := logger.GetLogger(ctx)
+	log := logger.GetLoggerWithoutContext()
 
 	//get the collection
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
@@ -70,12 +70,19 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 	go func() {
 		defer wg.Done()
 
-		//validate phone number
-		exists, err := helperfunctions.ValidatePhoneNumber(ctx, request.CountryCode, request.Phone)
-		phoneChan <- struct {
-			exists bool
-			err    error
-		}{exists, err}
+		if request.Phone == "" {
+			phoneChan <- struct {
+				exists bool
+				err    error
+			}{exists: false, err: nil}
+		} else {
+			//validate phone number
+			exists, err := helperfunctions.ValidatePhoneNumber(ctx, request.CountryCode, request.Phone)
+			phoneChan <- struct {
+				exists bool
+				err    error
+			}{exists, err}
+		}
 	}()
 
 	// Wait for both validations to complete

@@ -1,3 +1,0 @@
-{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}
-{"level":"ERROR","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Binding fail","error":"config mongo error : Config File \"mongo\" Not Found in \"[C:\\\\Users\\\\HP-PC\\\\Desktop\\\\TribeWthVibe\\\\users-service\\\\resources]\""}
-{"level":"INFO","time":"time.UnixDate","method":"main.startRouter","msg":"Running Server on port : 8001"}

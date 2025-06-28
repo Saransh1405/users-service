@@ -16,7 +16,7 @@ import (
 
 func Login(ctx *gin.Context, request *models.LoginRequest) (*models.LoginResponse, error) {
 	//get the logger
-	log := logger.GetLogger(ctx)
+	log := logger.GetLoggerWithoutContext()
 
 	//get the user col
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)

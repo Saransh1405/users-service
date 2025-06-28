@@ -13,7 +13,7 @@ import (
 
 func Delete(ctx *gin.Context, request *models.UserDeleteRequest) error {
 	//get the logger
-	log := logger.GetLogger(ctx)
+	log := logger.GetLoggerWithoutContext()
 
 	//get the collection
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)

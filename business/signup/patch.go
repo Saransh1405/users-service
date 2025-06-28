@@ -14,7 +14,7 @@ import (
 
 func Patch(ctx *gin.Context, request *models.UserPatchRequest) error {
 	//get the logger
-	log := logger.GetLogger(ctx)
+	log := logger.GetLoggerWithoutContext()
 
 	//get the collection
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
