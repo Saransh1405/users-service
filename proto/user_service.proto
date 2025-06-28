@@ -1,0 +1,53 @@
+// proto/user_service.proto
+syntax = "proto3";
+
+package userservice;
+
+option go_package = "users-service/proto";
+
+service UserService {
+  rpc Signup (SignupRequest) returns (SignupResponse);
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc Logout (LogoutRequest) returns (LogoutResponse);
+}
+
+// Request/Response messages
+message SignupRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string country_code = 5;
+  string user_profile_url = 6;
+}
+
+message SignupResponse {
+  string id = 1;
+  string email = 2;
+  string password = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string country_code = 6;
+  string user_profile_url = 7;
+  string client_name = 8;
+  string status = 9;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  SignupResponse user = 1;
+  string access_token = 2;
+  int64 expires_in = 3; 
+}
+
+message LogoutRequest {
+  string token = 1;
+}
+
+message LogoutResponse {
+  string message = 1;
+}

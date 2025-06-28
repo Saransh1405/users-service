@@ -3,8 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 	"users-service/api"
 	"users-service/constants"
+	"users-service/grpc"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
@@ -43,15 +47,41 @@ func main() {
 	// setup http client
 	initHTTPClient()
 
-	// // Connect a postgres
-	// postgres.InitPostgresDB(ctx)
-
 	// Connect to MongoDB
 	mongoDb.InitMongoDB()
 
-	// start router
-	startRouter(ctx)
+	// Create context with cancellation for graceful shutdown
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
+	// Start both REST and gRPC servers
+	go startRouter(ctx)
+	go startGRPCServer(ctx)
+
+	// Wait for interrupt signal to gracefully shutdown
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+
+	log := logger.GetLoggerWithoutContext()
+	log.Info("Shutting down servers...")
+
+	// Cancel context to trigger graceful shutdown
+	cancel()
+
+	// Give some time for graceful shutdown
+	time.Sleep(2 * time.Second)
+}
+
+func startGRPCServer(ctx context.Context) {
+	log := logger.GetLoggerWithoutContext()
+
+	// Create and start gRPC server
+	grpcServer := grpc.NewGRPCServer()
+
+	if err := grpcServer.Start(ctx); err != nil {
+		log.With(zap.Error(err)).Error("Failed to start gRPC server")
+	}
 }
 
 func initConfigs() {
