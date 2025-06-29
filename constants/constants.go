@@ -41,6 +41,7 @@ const (
 	VaultInitializationFailedErrr = "Vault initialization failed"
 	LanguageString                = "language"
 	LogoutSuccessMessage          = "Logout successfully"
+	ClientName                    = "clientName"
 )
 
 const (

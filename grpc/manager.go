@@ -21,6 +21,7 @@ type GRPCServer struct {
 
 // NewGRPCServer creates a new gRPC server instance
 func NewGRPCServer() *GRPCServer {
+	// Create server with auth interceptor
 	server := grpc.NewServer()
 
 	// Register the user service

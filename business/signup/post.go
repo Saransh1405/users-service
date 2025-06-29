@@ -116,18 +116,18 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 
 	//create a new user
 	user := models.Users{
-		ID:                clientName,
-		FirstName:         request.FirstName,
-		LastName:          request.LastName,
-		Password:          string(passwordHash),
-		Email:             request.Email,
-		Phone:             request.Phone,
-		CountryCode:       request.CountryCode,
-		ProfilePictureUrl: request.ProfilePictureUrl,
-		Status:            models.Active,
-		StatusLogs:        statusLogs,
-		ClientName:        clientName.Hex(),
-		CreatedAt:         time.Now().UnixMilli(),
+		ID:             clientName,
+		FirstName:      request.FirstName,
+		LastName:       request.LastName,
+		Password:       string(passwordHash),
+		Email:          request.Email,
+		Phone:          request.Phone,
+		CountryCode:    request.CountryCode,
+		UserProfileUrl: request.UserProfileUrl,
+		Status:         models.Active,
+		StatusLogs:     statusLogs,
+		ClientName:     clientName.Hex(),
+		CreatedAt:      time.Now().UnixMilli(),
 	}
 
 	//insert the user into the collection

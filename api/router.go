@@ -49,6 +49,15 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 	{
 		v1Routes.Use(middleware.KecyalokMiddleware())
 
+		// Handle the GET requests at /v1/getMyDetails
+		v1Routes.GET("/getMyDetails", signup.GetMyDetails)
+
+		// Handle the PATCH requests at /v1/users/me
+		v1Routes.PATCH("/users/me", signup.UpdateUser)
+
+		// Handle the DELETE requests at /v1/users/me
+		v1Routes.DELETE("/users/me", signup.Delete)
+
 	}
 
 	unAuthRoutes := router.Group("v1")

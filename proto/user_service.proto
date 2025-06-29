@@ -9,6 +9,9 @@ service UserService {
   rpc Signup (SignupRequest) returns (SignupResponse);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc Logout (LogoutRequest) returns (LogoutResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 }
 
 // Request/Response messages
@@ -46,8 +49,42 @@ message LoginResponse {
 
 message LogoutRequest {
   string token = 1;
+  string client_name = 2;
 }
 
 message LogoutResponse {
+  string message = 1;
+}
+
+message UpdateUserRequest{
+  string message = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string user_profile_url = 4;
+  string status = 5;
+  string reason_for_suspension = 6;
+  string client_name = 7;
+}
+
+message UpdateUserResponse{
+  string message = 1;
+}
+
+message GetUserRequest{
+  string client_name = 1;
+}
+
+message GetUserResponse{
+  SignupResponse user = 1;
+  int64 count = 2;
+}
+
+message DeleteUserRequest{
+  string id = 1;
+  string reason_for_delete = 2;
+  string client_name = 3;
+}
+
+message DeleteUserResponse{
   string message = 1;
 }

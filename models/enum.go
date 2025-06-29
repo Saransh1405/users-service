@@ -11,4 +11,5 @@ const (
 	Rejected        Status = "Rejected"
 	Approved        Status = "Approved"
 	Submitted       Status = "Submitted"
+	LoggedOut       Status = "Logged Out"
 )

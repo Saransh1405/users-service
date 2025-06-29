@@ -200,7 +200,7 @@ func GenerateJWT(userID primitive.ObjectID, email string) (string, int64, error)
 	}
 
 	// Get JWT secret from environment variable
-	jwtSecret := applicationConfig.GetString(constants.JWT_SECRET)
+	jwtSecret := applicationConfig.GetString(constants.JwtSecret)
 
 	// Set token expiration time (24 hours from now)
 	expirationTime := time.Now().Add(24 * time.Hour)

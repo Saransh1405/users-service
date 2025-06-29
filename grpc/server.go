@@ -29,12 +29,12 @@ func (s *UserServiceServer) Signup(ctx context.Context, req *proto.SignupRequest
 
 	// Convert proto request to your internal model
 	userReq := models.UserPostRequest{
-		FirstName:         req.FirstName,
-		LastName:          req.LastName,
-		Email:             req.Email,
-		CountryCode:       req.CountryCode,
-		ProfilePictureUrl: req.UserProfileUrl,
-		Password:          req.Password,
+		FirstName:      req.FirstName,
+		LastName:       req.LastName,
+		Email:          req.Email,
+		CountryCode:    req.CountryCode,
+		UserProfileUrl: req.UserProfileUrl,
+		Password:       req.Password,
 	}
 
 	ginCtx := &gin.Context{}
@@ -54,7 +54,7 @@ func (s *UserServiceServer) Signup(ctx context.Context, req *proto.SignupRequest
 		FirstName:      result.FirstName,
 		LastName:       result.LastName,
 		CountryCode:    result.CountryCode,
-		UserProfileUrl: result.ProfilePictureUrl,
+		UserProfileUrl: result.UserProfileUrl,
 		ClientName:     result.ClientName,
 		Status:         string(result.Status),
 	}, nil
@@ -63,8 +63,6 @@ func (s *UserServiceServer) Signup(ctx context.Context, req *proto.SignupRequest
 // Login implements user login via gRPC
 func (s *UserServiceServer) Login(ctx context.Context, req *proto.LoginRequest) (*proto.LoginResponse, error) {
 	log := logger.GetLoggerWithoutContext()
-
-	log.Info("gRPC Login called", zap.String("email", req.Email))
 
 	ginCtx := &gin.Context{}
 
@@ -87,7 +85,7 @@ func (s *UserServiceServer) Login(ctx context.Context, req *proto.LoginRequest) 
 			FirstName:      result.User.FirstName,
 			LastName:       result.User.LastName,
 			CountryCode:    result.User.CountryCode,
-			UserProfileUrl: result.User.ProfilePictureUrl,
+			UserProfileUrl: result.User.UserProfileUrl,
 			ClientName:     result.User.ClientName,
 			Status:         string(result.User.Status),
 		},
@@ -100,11 +98,96 @@ func (s *UserServiceServer) Login(ctx context.Context, req *proto.LoginRequest) 
 func (s *UserServiceServer) Logout(ctx context.Context, req *proto.LogoutRequest) (*proto.LogoutResponse, error) {
 	log := logger.GetLoggerWithoutContext()
 
-	log.Info("gRPC Logout called")
+	request := models.GetUserRequest{
+		ClientName: req.ClientName,
+	}
 
-	// TODO: Call your existing logout business logic here
+	// User ID is already in context from the interceptor
+	err := login.Logout(ctx, &request)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to logout")
+	}
 
 	return &proto.LogoutResponse{
 		Message: "Successfully logged out",
+	}, nil
+}
+
+// getUserDetails implements user getUserDetails via gRPC
+func (s *UserServiceServer) GetUser(ctx context.Context, req *proto.GetUserRequest) (*proto.GetUserResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	request := models.GetUserRequest{
+		ClientName: req.ClientName,
+	}
+
+	// User ID is already in context from the interceptor
+	result, count, err := signup.GetMyDetails(ctx, &request)
+
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to get user details")
+	}
+
+	return &proto.GetUserResponse{
+		User: &proto.SignupResponse{
+			Email:          result.Email,
+			Password:       result.Password,
+			FirstName:      result.FirstName,
+			LastName:       result.LastName,
+			CountryCode:    result.CountryCode,
+			UserProfileUrl: result.UserProfileUrl,
+			ClientName:     result.ClientName,
+			Status:         string(result.Status),
+		},
+		Count: count,
+	}, nil
+}
+
+// UpdateUser implements user UpdateUser via gRPC
+func (s *UserServiceServer) UpdateUser(ctx context.Context, req *proto.UpdateUserRequest) (*proto.UpdateUserResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	userPatchReq := models.UserPatchRequest{
+		FirstName:           req.FirstName,
+		LastName:            req.LastName,
+		UserProfileUrl:      req.UserProfileUrl,
+		Status:              req.Status,
+		ReasonForSuspension: req.ReasonForSuspension,
+		ClientName:          req.ClientName,
+	}
+
+	//call the logout business logic
+	err := signup.UpdateUser(ctx, &userPatchReq)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to logout")
+	}
+
+	return &proto.UpdateUserResponse{
+		Message: "Successfully updated user",
+	}, nil
+}
+
+// UpdateUser implements user UpdateUser via gRPC
+func (s *UserServiceServer) DeleteUser(ctx context.Context, req *proto.DeleteUserRequest) (*proto.DeleteUserResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	userDeleteReq := models.UserDeleteRequest{
+		ID:                req.Id,
+		ReasonForDeletion: req.ReasonForDelete,
+		ClientName:        req.ClientName,
+	}
+
+	//call the logout business logic
+	err := signup.Delete(ctx, &userDeleteReq)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to logout")
+	}
+
+	return &proto.DeleteUserResponse{
+		Message: "Successfully deleted user",
 	}, nil
 }

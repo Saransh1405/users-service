@@ -1,26 +1,33 @@
 package signup
 
 import (
+	"context"
+	"fmt"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/models"
 
-	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func Patch(ctx *gin.Context, request *models.UserPatchRequest) error {
+func UpdateUser(ctx context.Context, request *models.UserPatchRequest) error {
 	//get the logger
 	log := logger.GetLoggerWithoutContext()
 
 	//get the collection
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
 
-	//conver user id to object id
-	clientName, err := primitive.ObjectIDFromHex(request.Id)
+	//get the client name from the request
+	client := request.ClientName
+	if client == "" {
+		return fmt.Errorf("client name is required")
+	}
+
+	//convert client name to object id
+	clientName, err := primitive.ObjectIDFromHex(client)
 	if err != nil {
 		log.Error("Error converting string to object id")
 	}
@@ -35,8 +42,8 @@ func Patch(ctx *gin.Context, request *models.UserPatchRequest) error {
 		qry["lastName"] = request.LastName
 	}
 
-	if request.ProfilePictureUrl != "" {
-		qry["profilePictureUrl"] = request.ProfilePictureUrl
+	if request.UserProfileUrl != "" {
+		qry["userProfileUrl"] = request.UserProfileUrl
 	}
 
 	if request.ReasonForSuspension != "" {

@@ -12,7 +12,7 @@ const (
 	ImportConfig        = "import"
 	NovuConfig          = "novu"
 	AuthorizationHeader = "Authorization"
-	JWT_SECRET          = "JWT_SECRET"
+	JWT_SECRET          = "JWT.secret"
 )
 
 // config keys
