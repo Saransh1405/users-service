@@ -2,7 +2,7 @@ package signup
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"users-service/constants"
 	"users-service/library/mongoDb"
 	"users-service/logger"
@@ -21,18 +21,18 @@ func GetMyDetails(ctx context.Context, request *models.GetUserRequest) (*models.
 	//get the user col
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
 
-	fmt.Printf("request: %v\n", request)
 	//get the user id from the context
 	client := request.ClientName
 	if client == "" {
-		return nil, 0, fmt.Errorf("client name is required")
+		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
+		return nil, 0, errors.New(constants.UserNotFoundMessage)
 	}
 
 	//convert the client name to object id
 	objectClientName, err := primitive.ObjectIDFromHex(client)
 	if err != nil {
 		log.Error("Error converting string to object id", zap.Error(err))
-		return nil, 0, err
+		return nil, 0, errors.New(constants.ErrorInConvertingToObjectId)
 	}
 
 	//get the user details
@@ -40,7 +40,7 @@ func GetMyDetails(ctx context.Context, request *models.GetUserRequest) (*models.
 	err = userCol.FindOne(ctx, bson.M{"_id": objectClientName}).Decode(&user)
 	if err != nil {
 		log.Error("Error getting user details", zap.Error(err))
-		return nil, 0, err
+		return nil, 0, errors.New(constants.ErrorInGettingData)
 	}
 
 	return &user, 1, nil

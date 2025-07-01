@@ -28,6 +28,12 @@
         "InvalidOTP": "invalid otp provided",
         "UserAlreadyExists": "user with this phone number already exists",
         "PhoneNumberValidationFailed": "Phone number already exists",
-        "EmailAlreadyExists": "Email already exists"
+        "EmailAlreadyExists": "Email already exists",
+        "ErrorInInertingData": "Error in inserting data",
+        "ErrorInGettingData": "Error in getting data",
+        "ErrorInConvertingToObjectId": "Error in converting to object id",
+        "ErrorInConvertingPassword": "Error in converting password",
+        "ErrorInValidatingEmail": "Email already exists",
+        "ErrorInValidatingPhoneNumber": "Phone number already exists"
     }
 }

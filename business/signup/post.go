@@ -94,8 +94,8 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 
 	// Check for validation errors
 	if emailResult.err != nil {
-		log.With(zap.Error(emailResult.err)).Error("Error validating email")
-		return nil, errors.New("error validating email")
+		log.With(zap.Error(errors.New(constants.ErrorInValidatingEmail))).Error(constants.ErrorInValidatingEmail)
+		return nil, errors.New(constants.ErrorInValidatingEmail)
 	}
 
 	if phoneResult.err != nil {
@@ -111,7 +111,7 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 
 	if phoneResult.exists {
 		log.Error("Phone number already exists")
-		return nil, errors.New("phone number already exists")
+		return nil, errors.New(constants.PhoneNumberValidationFailed)
 	}
 
 	//create a new user
@@ -133,7 +133,8 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 	//insert the user into the collection
 	_, err = userCol.InsertOne(ctx, user)
 	if err != nil {
-		log.Error("error inserting user")
+		log.With(zap.Error(errors.New(constants.ErrorInInertingData))).Error(constants.ErrorInInertingData)
+		return nil, errors.New(constants.ErrorInInertingData)
 	}
 
 	return &user, err

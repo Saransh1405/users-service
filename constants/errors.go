@@ -89,6 +89,12 @@ const (
 	BusinessIdIsRequiredMessage          = "errors.BusinessIdIsRequired"
 	BrandIdIsRequiredMessage             = "errors.BrandIdIsRequired"
 	InvalidOTPMessage                    = "errors.InvalidOTP"
+	ErrorInInertingData                  = "errors.ErrorInInertingData"
+	ErrorInGettingData                   = "errors.ErrorInGettingData"
+	ErrorInConvertingToObjectId          = "errors.ErrorInConvertingToObjectId"
+	ErrorInConvertingPassword            = "errors.ErrorInConvertingPassword"
+	ErrorInValidatingEmail               = "errors.ErrorInValidatingEmail"
+	ErrorInValidatingPhoneNumber         = "errors.ErrorInValidatingPhoneNumber"
 )
 
 // Trigger Messages

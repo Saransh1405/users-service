@@ -2,7 +2,7 @@ package signup
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
@@ -11,6 +11,7 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.uber.org/zap"
 )
 
 func UpdateUser(ctx context.Context, request *models.UserPatchRequest) error {
@@ -23,7 +24,8 @@ func UpdateUser(ctx context.Context, request *models.UserPatchRequest) error {
 	//get the client name from the request
 	client := request.ClientName
 	if client == "" {
-		return fmt.Errorf("client name is required")
+		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
+		return errors.New(constants.UserNotFoundMessage)
 	}
 
 	//convert client name to object id
@@ -79,7 +81,8 @@ func UpdateUser(ctx context.Context, request *models.UserPatchRequest) error {
 	//update the user into the collection
 	_, err = userCol.UpdateOne(ctx, bson.M{"_id": clientName}, update)
 	if err != nil {
-		log.Error("error inserting user")
+		log.With(zap.Error(errors.New(constants.ErrorInInertingData))).Error(constants.ErrorInInertingData)
+		return errors.New(constants.ErrorInInertingData)
 	}
 
 	return nil

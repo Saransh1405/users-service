@@ -2,7 +2,7 @@ package signup
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
@@ -23,7 +23,8 @@ func Delete(ctx context.Context, request *models.UserDeleteRequest) error {
 
 	clientName := request.ClientName
 	if clientName == "" {
-		return fmt.Errorf("client name is required")
+		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
+		return errors.New(constants.UserNotFoundMessage)
 	}
 
 	//convert the client name to object id

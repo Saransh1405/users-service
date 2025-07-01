@@ -176,7 +176,7 @@ func ErrorBasedOnResponse(ctx *gin.Context, msg string, respType int, err error)
 		SendInternalServerError(ctx, msg, constants.WLInternalServerErrorCode, respType, err)
 
 	//400
-	case errors.New(constants.BadRequestMessage).Error(), errors.New(constants.PasswordDoesNotMatchMessage).Error(), errors.New(constants.OldPasswordAndNewPasswordSameMessage).Error(), errors.New(constants.BusinessIdIsRequiredMessage).Error(), errors.New(constants.BrandIdIsRequiredMessage).Error():
+	case errors.New(constants.BadRequestMessage).Error(), errors.New(constants.PasswordDoesNotMatchMessage).Error(), errors.New(constants.OldPasswordAndNewPasswordSameMessage).Error(), errors.New(constants.BusinessIdIsRequiredMessage).Error(), errors.New(constants.BrandIdIsRequiredMessage).Error(), errors.New(constants.ErrorInInertingData).Error(), errors.New(constants.ErrorInGettingData).Error(), errors.New(constants.ErrorInConvertingToObjectId).Error(), errors.New(constants.ErrorInConvertingPassword).Error():
 		SendBadRequest(ctx, msg, constants.WLBadRequestCode, respType, err)
 
 	//401
@@ -192,7 +192,7 @@ func ErrorBasedOnResponse(ctx *gin.Context, msg string, respType int, err error)
 		SendNoDataFoundError(ctx, msg, constants.WLNoDataFoundCode, respType, err)
 
 	//409
-	case errors.New(constants.ConflictMessage).Error(), errors.New(constants.UserAlreadyExistsMessage).Error():
+	case errors.New(constants.ConflictMessage).Error(), errors.New(constants.ErrorInValidatingEmail).Error(), errors.New(constants.ErrorInValidatingPhoneNumber).Error(), errors.New(constants.UserAlreadyExistsMessage).Error():
 		SendConflict(ctx, constants.WLDataConflictCode, msg, respType, nil)
 
 	//429

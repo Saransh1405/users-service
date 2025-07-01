@@ -2,7 +2,7 @@ package login
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"time"
 	"users-service/constants"
 	"users-service/library/mongoDb"
@@ -24,14 +24,15 @@ func Logout(ctx context.Context, request *models.GetUserRequest) error {
 	//get the client name from the context
 	clientName := request.ClientName
 	if clientName == "" {
-		return fmt.Errorf("client name is required")
+		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
+		return errors.New(constants.UserNotFoundMessage)
 	}
 
 	//convert the client name to object id
 	objectClientName, err := primitive.ObjectIDFromHex(clientName)
 	if err != nil {
-		log.Error("Error converting string to object id", zap.Error(err))
-		return err
+		log.With(zap.Error(errors.New(constants.ErrorInConvertingToObjectId))).Error(constants.ErrorInConvertingToObjectId)
+		return errors.New(constants.ErrorInConvertingToObjectId)
 	}
 
 	update := bson.M{
@@ -54,8 +55,8 @@ func Logout(ctx context.Context, request *models.GetUserRequest) error {
 
 	_, err = userCol.UpdateByID(ctx, objectClientName, update)
 	if err != nil {
-		log.Error("Error updating user details", zap.Error(err))
-		return err
+		log.With(zap.Error(errors.New(constants.ErrorInInertingData))).Error(constants.ErrorInInertingData)
+		return errors.New(constants.ErrorInInertingData)
 	}
 
 	return nil

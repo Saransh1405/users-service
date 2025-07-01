@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,8 +36,8 @@ func Login(ctx *gin.Context, request *models.LoginRequest) (*models.LoginRespons
 		[]byte(request.Password),
 	)
 	if err != nil {
-		log.Error("Invalid password")
-		return nil, errors.New("invalid credentials") // Same generic error
+		log.With(zap.Error(errors.New(constants.ErrorInConvertingPassword))).Error(constants.ErrorInConvertingPassword)
+		return nil, errors.New(constants.ErrorInConvertingPassword)
 	}
 
 	//generate the token
