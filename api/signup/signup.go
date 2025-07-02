@@ -2,6 +2,7 @@ package signup
 
 import (
 	"users-service/business/signup"
+	otp "users-service/business/signup/otp"
 	"users-service/constants"
 	"users-service/logger"
 	"users-service/models"
@@ -75,8 +76,8 @@ func Delete(ctx *gin.Context) {
 	if validationErr := helperfunctions.ValidateRequestData(ctx, &request, binding.JSON); validationErr != nil {
 		return
 	}
-	err := signup.Delete(ctx, &request)
 
+	err := signup.Delete(ctx, &request)
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
 		msg := localization.GetMessage(lang, err.Error(), nil)
@@ -119,4 +120,79 @@ func GetMyDetails(ctx *gin.Context) {
 	//sent the success message
 	successMessage := localization.GetMessage(lang, constants.SuccessMessage, nil)
 	utils.SendStatusOK(ctx, constants.IsString, successMessage, &user)
+}
+
+func PostSendOTP(ctx *gin.Context) {
+	//get the lang
+	lang, _ := ctx.Get(constants.LanguageString)
+
+	//get the logger
+	log := logger.GetLogger(ctx)
+
+	var req models.OTPRequest
+	if validationErr := helperfunctions.ValidateRequestData(ctx, &req, binding.JSON); validationErr != nil {
+		return
+	}
+
+	err := otp.PostSendOTP(ctx, &req)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		msg := localization.GetMessage(lang, err.Error(), nil)
+		utils.ErrorBasedOnResponse(ctx, msg, constants.IsString, err)
+		return
+	}
+
+	//sent the success message
+	successMessage := localization.GetMessage(lang, constants.SuccessMessage, nil)
+	utils.SendStatusOK(ctx, constants.IsString, successMessage, "OTP sent")
+}
+
+func ResendOTP(ctx *gin.Context) {
+	//get the lang
+	lang, _ := ctx.Get(constants.LanguageString)
+
+	//get the logger
+	log := logger.GetLogger(ctx)
+
+	var req models.OTPRequest
+	if validationErr := helperfunctions.ValidateRequestData(ctx, &req, binding.JSON); validationErr != nil {
+		return
+	}
+
+	err := otp.ResendOTP(ctx, &req)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		msg := localization.GetMessage(lang, err.Error(), nil)
+		utils.ErrorBasedOnResponse(ctx, msg, constants.IsString, err)
+		return
+	}
+
+	//sent the success message
+	successMessage := localization.GetMessage(lang, constants.SuccessMessage, nil)
+	utils.SendStatusOK(ctx, constants.IsString, successMessage, "OTP resent")
+}
+
+func VerifyOTP(ctx *gin.Context) {
+	//get the lang
+	lang, _ := ctx.Get(constants.LanguageString)
+
+	//get the logger
+	log := logger.GetLogger(ctx)
+
+	var req models.OTPRequest
+	if validationErr := helperfunctions.ValidateRequestData(ctx, &req, binding.JSON); validationErr != nil {
+		return
+	}
+
+	err := otp.VerifyOTP(ctx, &req)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		msg := localization.GetMessage(lang, err.Error(), nil)
+		utils.ErrorBasedOnResponse(ctx, msg, constants.IsString, err)
+		return
+	}
+
+	//sent the success message
+	successMessage := localization.GetMessage(lang, constants.SuccessMessage, nil)
+	utils.SendStatusOK(ctx, constants.IsString, successMessage, "OTP verified")
 }

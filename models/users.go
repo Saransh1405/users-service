@@ -53,3 +53,8 @@ type Users struct {
 	ClientName          string             `bson:"clientName" json:"clientName"`
 	CreatedAt           int64              `bson:"createdAt" json:"createdAt"`
 } //@name Users
+
+type OTPRequest struct {
+	Phone string `json:"phone"`
+	OTP   string `json:"otp,omitempty"`
+} //@name OTPRequest

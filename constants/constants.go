@@ -42,6 +42,8 @@ const (
 	LanguageString                = "language"
 	LogoutSuccessMessage          = "Logout successfully"
 	ClientName                    = "clientName"
+	OTPAuthKey                    = "otp.authKey"
+	OTPTemplateID                 = "otp.templateID"
 )
 
 const (

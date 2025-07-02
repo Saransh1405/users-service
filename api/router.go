@@ -77,6 +77,15 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 		// Handle the POST requests at /v1/signup
 		unAuthRoutes.POST(constants.Signup, signup.Post)
 
+		// Handle the POST requests at /v1/resendOTP
+		unAuthRoutes.POST(constants.ResendOTP, signup.ResendOTP)
+
+		// Handle the POST requests at /v1/verifyOTP
+		unAuthRoutes.POST(constants.VerifyOTP, signup.VerifyOTP)
+
+		// Handle the POST requests at /v1/sendOTP
+		unAuthRoutes.POST(constants.SendOTP, signup.PostSendOTP)
+
 		// Handle the GET requests at /v1/statusNew
 		unAuthRoutes.GET("/krakend.json", func(ctx *gin.Context) {
 			lang := ctx.GetHeader("language")
