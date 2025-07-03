@@ -2,7 +2,6 @@ package signup
 
 import (
 	"users-service/business/signup"
-	otp "users-service/business/signup/otp"
 	"users-service/constants"
 	"users-service/logger"
 	"users-service/models"
@@ -134,7 +133,7 @@ func PostSendOTP(ctx *gin.Context) {
 		return
 	}
 
-	err := otp.PostSendOTP(ctx, &req)
+	err := signup.PostSendOTP(ctx, &req)
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
 		msg := localization.GetMessage(lang, err.Error(), nil)
@@ -159,7 +158,7 @@ func ResendOTP(ctx *gin.Context) {
 		return
 	}
 
-	err := otp.ResendOTP(ctx, &req)
+	err := signup.ResendOTP(ctx, &req)
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
 		msg := localization.GetMessage(lang, err.Error(), nil)
@@ -184,7 +183,7 @@ func VerifyOTP(ctx *gin.Context) {
 		return
 	}
 
-	err := otp.VerifyOTP(ctx, &req)
+	err := signup.VerifyOTP(ctx, &req)
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
 		msg := localization.GetMessage(lang, err.Error(), nil)

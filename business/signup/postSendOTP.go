@@ -55,5 +55,6 @@ func PostSendOTP(ctx *gin.Context, request *models.OTPRequest) error {
 
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Println("SendOTP response:", string(body))
+
 	return nil
 }

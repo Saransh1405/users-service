@@ -121,6 +121,7 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 		LastName:       request.LastName,
 		Password:       string(passwordHash),
 		Email:          request.Email,
+		PhoneVerified:  request.PhoneVerified,
 		Phone:          request.Phone,
 		CountryCode:    request.CountryCode,
 		UserProfileUrl: request.UserProfileUrl,

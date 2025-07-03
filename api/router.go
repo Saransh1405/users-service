@@ -78,10 +78,10 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 		unAuthRoutes.POST(constants.Signup, signup.Post)
 
 		// Handle the POST requests at /v1/resendOTP
-		unAuthRoutes.POST(constants.ResendOTP, signup.ResendOTP)
+		unAuthRoutes.GET(constants.ResendOTP, signup.ResendOTP)
 
 		// Handle the POST requests at /v1/verifyOTP
-		unAuthRoutes.POST(constants.VerifyOTP, signup.VerifyOTP)
+		unAuthRoutes.GET(constants.VerifyOTP, signup.VerifyOTP)
 
 		// Handle the POST requests at /v1/sendOTP
 		unAuthRoutes.POST(constants.SendOTP, signup.PostSendOTP)

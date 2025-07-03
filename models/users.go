@@ -9,6 +9,7 @@ type UserPostRequest struct {
 	LastName       string `json:"lastName" binding:"required" example:"Doe"`
 	Email          string `json:"email" binding:"required" example:"xyz@gmail.com"`
 	Phone          string `json:"phone" binding:"required" example:"1234567890"`
+	PhoneVerified  bool   `json:"phoneVerified" binding:"required" example:"false"`
 	CountryCode    string `json:"countryCode" binding:"required" example:"+91"`
 	UserProfileUrl string `json:"userProfileUrl" example:"www.xyz.com"`
 	Password       string `json:"password" binding:"required" example:"password123"`
@@ -55,6 +56,6 @@ type Users struct {
 } //@name Users
 
 type OTPRequest struct {
-	Phone string `json:"phone"`
+	Phone string `json:"phone" binding:"required" example:"1234567890"`
 	OTP   string `json:"otp,omitempty"`
 } //@name OTPRequest
