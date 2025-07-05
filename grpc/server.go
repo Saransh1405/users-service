@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 	"users-service/business/login"
+	"users-service/business/password"
 	"users-service/business/signup"
 	"users-service/constants"
 	"users-service/logger"
@@ -189,5 +190,71 @@ func (s *UserServiceServer) DeleteUser(ctx context.Context, req *proto.DeleteUse
 
 	return &proto.DeleteUserResponse{
 		Message: "Successfully deleted user",
+	}, nil
+}
+
+// ForgotPassword implements user ForgotPassword via gRPC
+func (s *UserServiceServer) ForgotPassword(ctx context.Context, req *proto.ForgotPasswordRequest) (*proto.ForgotPasswordResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	userForgotPasswordReq := models.ForgotPasswordRequest{
+		ClientName: req.ClientName,
+		Email:      req.Email,
+	}
+
+	//call the logout business logic
+	err := password.ForgotPassword(ctx, &userForgotPasswordReq)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to send password reset email")
+	}
+
+	return &proto.ForgotPasswordResponse{
+		Message: "Successfully sent password reset email",
+	}, nil
+}
+
+// ForgotPassword implements user ForgotPassword via gRPC
+func (s *UserServiceServer) ResetPassword(ctx context.Context, req *proto.ResetPasswordRequest) (*proto.ResetPasswordResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	userResetPasswordReq := models.ResetPasswordRequest{
+		ClientName:         req.ClientName,
+		ResetToken:         req.ResetToken,
+		ConfirmNewPassword: req.ConfirmNewPassword,
+		NewPassword:        req.Password,
+	}
+
+	//call the logout business logic
+	err := password.ResetPassword(ctx, &userResetPasswordReq)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to send password reset email")
+	}
+
+	return &proto.ResetPasswordResponse{
+		Message: "Successfully reset password",
+	}, nil
+}
+
+// UpdatePassword implements user UpdatePassword via gRPC
+func (s *UserServiceServer) UpdatePassword(ctx context.Context, req *proto.UpdatePasswordRequest) (*proto.UpdatePasswordResponse, error) {
+	log := logger.GetLoggerWithoutContext()
+
+	userUpdatePasswordReq := models.UpdatePasswordRequest{
+		ClientName:  req.ClientName,
+		Password:    req.Password,
+		NewPassword: req.NewPassword,
+	}
+
+	//call the logout business logic
+	err := password.UpdatePassword(ctx, &userUpdatePasswordReq)
+	if err != nil {
+		log.With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+		return nil, status.Error(codes.Internal, "Failed to send password reset email")
+	}
+
+	return &proto.UpdatePasswordResponse{
+		Message: "Successfully updated password",
 	}, nil
 }

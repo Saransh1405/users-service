@@ -54,6 +54,12 @@ const (
 	TaxField            = "Tax Field"
 )
 
+// Google OAuth constants
+const (
+	GoogleLoginEndpoint   = "/google/login"
+	GoogleAuthURLEndpoint = "/google/auth-url"
+)
+
 // user types
 
 const (

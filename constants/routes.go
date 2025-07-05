@@ -19,6 +19,7 @@ const (
 	VerifyOTP                          = "/verifyOTP"
 	SendOTP                            = "/sendOTP"
 	Password                           = "/password"
+	ForgotPassword                     = "/forgotPassword"
 	ResetPassword                      = "/resetPassword"
 	User                               = "/user"
 	UserWithId                         = "/user/:id"

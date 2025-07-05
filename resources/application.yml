@@ -45,3 +45,9 @@ keycloak:
   permissionsForBrand: ["brands-read-permission", "brands-write-permission", "properties-read-permission", "properties-write-permission"]
   permissionsForProperty: ["properties-read-permission", "properties-write-permission"]
   defaultAdminRoles: ["Admin"] # if any change here then need to change in create Realm page role name
+
+# Google OAuth Configuration
+google:
+  client_id: "your-google-client-id"
+  client_secret: "your-google-client-secret"
+  redirect_url: "http://localhost:3000/auth/google/callback"

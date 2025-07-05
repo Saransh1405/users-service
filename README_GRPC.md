@@ -1,250 +1,184 @@
-# gRPC Implementation for User Service
+# Users Service - API Documentation
 
-This document describes the gRPC implementation added to your user service.
+## 🏗️ Architecture Overview
 
-## Overview
+This service provides both **HTTP REST APIs** and **gRPC APIs** with different purposes:
 
-The user service now supports both REST API (existing) and gRPC (new) protocols. The gRPC server runs alongside the REST server, providing the same functionality through a more efficient binary protocol.
+### **HTTP REST APIs (Port 8001)**
+- **Purpose**: Frontend integration and OAuth flows
+- **Use Cases**: Web applications, mobile apps, OAuth authentication
+- **Key Features**: 
+  - Google OAuth integration
+  - Email/password authentication
+  - User registration
+  - Session management
 
-## Features
+### **gRPC APIs (Port 9090)**
+- **Purpose**: Internal service-to-service communication
+- **Use Cases**: Microservices, backend services, internal operations
+- **Key Features**:
+  - High-performance inter-service communication
+  - Strong typing with Protocol Buffers
+  - Streaming capabilities
 
-- **Dual Protocol Support**: REST API and gRPC running simultaneously
-- **Protocol Buffers**: Type-safe message definitions
-- **Reflection**: Built-in gRPC reflection for debugging
-- **Interceptors**: Request/response logging and error handling
-- **Graceful Shutdown**: Proper server shutdown handling
+## 📋 API Endpoints
 
-## Prerequisites
+### **HTTP REST Endpoints (OAuth & Public APIs)**
 
-1. **Install Protocol Buffers Compiler**:
-   ```bash
-   # On Windows (using Chocolatey)
-   choco install protoc
-   
-   # On macOS
-   brew install protobuf
-   
-   # On Linux
-   sudo apt-get install protobuf-compiler
-   ```
-
-2. **Install Go Protocol Buffers Plugins**:
-   ```bash
-   go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-   go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-   ```
-
-## Project Structure
-
+#### **Google OAuth**
 ```
-users-service/
-├── proto/
-│   └── user-service.proto          # Protocol buffer definitions
-├── grpc/
-│   ├── server.go                   # gRPC service implementation
-│   └── manager.go                  # gRPC server management
-├── examples/
-│   └── grpc_client.go              # Example gRPC client
-├── scripts/
-│   └── generate-proto.sh           # Script to generate Go code
-└── main.go                         # Updated to run both servers
+GET  /v1/google/auth-url?state=random123    # Get Google authorization URL
+POST /v1/google/login                       # Complete Google OAuth login
 ```
 
-## Configuration
+#### **Authentication**
+```
+POST /v1/login                              # Email/password login
+POST /v1/signup                             # User registration
+POST /v1/logout                             # User logout
+```
 
-The gRPC server configuration is in `resources/application.yml`:
+#### **OTP Management**
+```
+POST /v1/sendOTP                            # Send OTP
+GET  /v1/verifyOTP                          # Verify OTP
+GET  /v1/resendOTP                          # Resend OTP
+```
 
+#### **User Management (Authenticated)**
+```
+GET    /v1/getMyDetails                     # Get user profile
+PATCH  /v1/users/me                         # Update user profile
+DELETE /v1/users/me                         # Delete user account
+```
+
+### **gRPC Endpoints (Internal Services)**
+
+#### **User Management**
+```protobuf
+rpc Signup (SignupRequest) returns (SignupResponse);
+rpc Login (LoginRequest) returns (LoginResponse);
+rpc Logout (LogoutRequest) returns (LogoutResponse);
+rpc GetUser (GetUserRequest) returns (GetUserResponse);
+rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
+```
+
+## 🔄 When to Use Which API?
+
+### **Use HTTP REST APIs When:**
+- ✅ Building frontend applications (React, Vue, Angular)
+- ✅ Implementing OAuth flows (Google, Facebook, etc.)
+- ✅ Mobile app authentication
+- ✅ Public API access
+- ✅ Webhook integrations
+- ✅ Browser-based authentication flows
+
+### **Use gRPC APIs When:**
+- ✅ Service-to-service communication
+- ✅ High-performance requirements
+- ✅ Internal microservices
+- ✅ Batch operations
+- ✅ Real-time data streaming
+- ✅ Backend-to-backend operations
+
+## 🚀 Getting Started
+
+### **HTTP REST API**
+```bash
+# Start the HTTP server
+go run main.go
+# Server runs on http://localhost:8001
+```
+
+### **gRPC API**
+```bash
+# The gRPC server starts automatically with the main application
+# Server runs on localhost:9090
+```
+
+## 📝 Example Usage
+
+### **Frontend Integration (HTTP)**
+```javascript
+// 1. Get Google auth URL
+const response = await fetch('/v1/google/auth-url?state=random123');
+const { authUrl } = await response.json();
+
+// 2. Redirect user to Google
+window.location.href = authUrl;
+
+// 3. Handle callback and login
+const code = new URLSearchParams(window.location.search).get('code');
+const loginResponse = await fetch('/v1/google/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    code: code,
+    redirectUri: 'http://localhost:3000/callback',
+    clientName: 'myapp'
+  })
+});
+```
+
+### **Service Integration (gRPC)**
+```go
+// Connect to gRPC server
+conn, err := grpc.Dial("localhost:9090", grpc.WithInsecure())
+client := proto.NewUserServiceClient(conn)
+
+// Call gRPC method
+response, err := client.Signup(ctx, &proto.SignupRequest{
+    Email: "user@example.com",
+    Password: "password123",
+    FirstName: "John",
+    LastName: "Doe",
+})
+```
+
+## 🔧 Configuration
+
+### **HTTP Server Configuration**
+```yaml
+server:
+  host: "http://localhost:8001"
+  port: 8001
+```
+
+### **gRPC Server Configuration**
 ```yaml
 grpc:
   port: 9090
   enableReflection: true
   maxConcurrentStreams: 100
-  maxConnectionIdle: 300s
-  maxConnectionAge: 600s
-  time: 120s
-  timeout: 20s
 ```
 
-## Usage
-
-### 1. Generate Protocol Buffer Code
-
-First, generate the Go code from the protobuf definitions:
-
-```bash
-# Make the script executable
-chmod +x scripts/generate-proto.sh
-
-# Run the generation script
-./scripts/generate-proto.sh
-```
-
-This will create:
-- `proto/user-service.pb.go` - Protocol buffer message types
-- `proto/user-service_grpc.pb.go` - gRPC service definitions
-
-### 2. Run the Server
-
-The server now runs both REST and gRPC servers:
-
-```bash
-go run main.go
-```
-
-You should see output like:
-```
-Running Server on port : 8001
-Starting gRPC server on port : 9090
-```
-
-### 3. Test with gRPC Client
-
-Use the example client to test the gRPC functionality:
-
-```bash
-go run examples/grpc_client.go
-```
-
-### 4. Use gRPC Reflection (Optional)
-
-You can use tools like `grpcurl` to interact with the server:
-
-```bash
-# Install grpcurl
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-
-# List services
-grpcurl -plaintext localhost:9090 list
-
-# List methods for UserService
-grpcurl -plaintext localhost:9090 list userservice.UserService
-
-# Call CreateUser method
-grpcurl -plaintext -d '{
-  "first_name": "John",
-  "last_name": "Doe",
-  "email": "john@example.com",
-  "password": "password123"
-}' localhost:9090 userservice.UserService/CreateUser
-```
-
-## API Methods
-
-The gRPC service provides the following methods:
-
-### User Management
-- `CreateUser` - Create a new user
-- `GetUser` - Retrieve user by ID, email, or phone
-- `UpdateUser` - Update user information
-- `DeleteUser` - Delete a user
-- `ListUsers` - List users with pagination
-
-### Authentication
-- `Login` - User login
-- `Logout` - User logout
-
-### Password Management
-- `ChangePassword` - Change user password
-- `ResetPassword` - Reset user password
-
-### User Status
-- `SuspendUser` - Suspend a user
-- `ActivateUser` - Activate a suspended user
-
-## Implementation Status
-
-Currently implemented:
-- ✅ Server infrastructure
-- ✅ Protocol buffer definitions
-- ✅ CreateUser (partially - calls existing business logic)
-- ✅ Basic error handling and logging
-- ✅ Graceful shutdown
-
-To be implemented:
-- ⏳ Complete business logic integration for all methods
-- ⏳ Authentication and authorization
-- ⏳ Input validation
-- ⏳ Error mapping from business logic to gRPC status codes
-
-## Development
-
-### Adding New Methods
-
-1. **Update Protocol Buffer Definition** (`proto/user-service.proto`):
-   ```protobuf
-   rpc NewMethod(NewMethodRequest) returns (NewMethodResponse);
-   ```
-
-2. **Regenerate Go Code**:
-   ```bash
-   ./scripts/generate-proto.sh
-   ```
-
-3. **Implement in Server** (`grpc/server.go`):
-   ```go
-   func (s *UserServiceServer) NewMethod(ctx context.Context, req *proto.NewMethodRequest) (*proto.NewMethodResponse, error) {
-       // Implementation here
-   }
-   ```
-
-### Error Handling
-
-Use gRPC status codes for errors:
-
-```go
-import "google.golang.org/grpc/status"
-import "google.golang.org/grpc/codes"
-
-// Return appropriate error
-return nil, status.Error(codes.InvalidArgument, "Invalid input")
-return nil, status.Error(codes.NotFound, "User not found")
-return nil, status.Error(codes.Internal, "Internal server error")
-```
-
-## Performance Benefits
-
-gRPC provides several advantages over REST:
-
-- **Binary Protocol**: More efficient than JSON
-- **HTTP/2**: Multiplexing, compression, and streaming
-- **Type Safety**: Compile-time type checking
-- **Code Generation**: Automatic client/server code generation
-- **Streaming**: Support for real-time communication
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"protoc: command not found"**
-   - Install Protocol Buffers compiler (see Prerequisites)
-
-2. **"protoc-gen-go: command not found"**
-   - Install Go protobuf plugins (see Prerequisites)
-
-3. **Port already in use**
-   - Change the gRPC port in `application.yml`
-
-4. **Import errors**
-   - Run `go mod tidy` to update dependencies
-   - Ensure protobuf files are generated correctly
-
-### Debugging
-
-Enable gRPC reflection for debugging:
+### **Google OAuth Configuration**
 ```yaml
-grpc:
-  enableReflection: true
+google:
+  client_id: "your-google-client-id"
+  client_secret: "your-google-client-secret"
+  redirect_url: "http://localhost:3000/auth/google/callback"
 ```
 
-Use tools like:
-- `grpcurl` for command-line testing
-- `grpcui` for web-based testing
-- `grpc-gateway` for REST-to-gRPC proxy
+## 🛡️ Security Considerations
 
-## Next Steps
+### **HTTP REST APIs**
+- CORS configuration for frontend access
+- Rate limiting for public endpoints
+- Input validation and sanitization
+- OAuth state parameter for CSRF protection
 
-1. Complete the implementation of all gRPC methods
-2. Add comprehensive testing
-3. Implement authentication middleware
-4. Add metrics and monitoring
-5. Consider implementing streaming methods for real-time features 
+### **gRPC APIs**
+- Internal network access only
+- Service-to-service authentication
+- Request/response validation
+- Error handling and logging
+
+## 📊 Monitoring and Logging
+
+Both HTTP and gRPC endpoints use the same logging infrastructure:
+- Request/response logging
+- Error tracking
+- Performance metrics
+- Structured logging with Zap 

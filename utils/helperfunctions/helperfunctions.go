@@ -1,6 +1,7 @@
 package helperfunctions
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -144,7 +145,7 @@ func GenerateID() string {
 	return string(inRune)
 }
 
-func ValidateEmail(ctx *gin.Context, email string) (bool, error) {
+func ValidateEmail(ctx context.Context, email string) (bool, error) {
 	//user col
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
 
@@ -163,7 +164,7 @@ func ValidateEmail(ctx *gin.Context, email string) (bool, error) {
 	return exists > 0, nil
 }
 
-func ValidatePhoneNumber(ctx *gin.Context, countryCode, phone string) (bool, error) {
+func ValidatePhoneNumber(ctx context.Context, countryCode, phone string) (bool, error) {
 	//user col
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
 
@@ -228,4 +229,10 @@ func GenerateJWT(userID primitive.ObjectID, email string) (string, int64, error)
 	}
 
 	return tokenString, expirationTime.UnixMilli(), nil
+}
+
+func GenerateResetToken() string {
+	b := make([]byte, 32)
+	rand.Read(b)
+	return fmt.Sprintf("%x", b)
 }

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 	"users-service/api/login"
+	"users-service/api/password"
 	"users-service/api/signup"
 	"users-service/constants"
 	"users-service/utils"
@@ -45,34 +46,20 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 
 	router.Use(middlewareFunc)
 
-	v1Routes := router.Group("v1")
-	{
-		v1Routes.Use(middleware.KecyalokMiddleware())
-
-		// Handle the GET requests at /v1/getMyDetails
-		v1Routes.GET("/getMyDetails", signup.GetMyDetails)
-
-		// Handle the PATCH requests at /v1/users/me
-		v1Routes.PATCH("/users/me", signup.UpdateUser)
-
-		// Handle the DELETE requests at /v1/users/me
-		v1Routes.DELETE("/users/me", signup.Delete)
-
-	}
-
 	unAuthRoutes := router.Group("v1")
 	{
+		// ========================================
+		// HTTP ENDPOINTS (OAuth & Public APIs)
+		// ========================================
+		// These endpoints are designed for frontend integration
+		// and OAuth flows that require HTTP redirects
+
 		// Handle the POST requests at /v1/login
 		unAuthRoutes.POST(constants.Login, login.Post)
 
-		// // Handle the POST requests at /v1/logout
-		// unAuthRoutes.POST(constants.Logout, logout.Post)
-
-		// // Handle the POST requests at /v1/loginWithOtp
-		// unAuthRoutes.POST(constants.LoginWithOtp, otpLogin.Post)
-
-		// // Handle the PATCH requests at /v1/loginWithOtp
-		// unAuthRoutes.PATCH(constants.LoginWithOtp, otpLogin.Patch)
+		// Google OAuth endpoints (HTTP-only for OAuth flow)
+		unAuthRoutes.POST("/google/login", login.GoogleLogin)
+		unAuthRoutes.GET("/google/auth-url", login.GetGoogleAuthURL)
 
 		// Handle the POST requests at /v1/signup
 		unAuthRoutes.POST(constants.Signup, signup.Post)
@@ -85,6 +72,12 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 
 		// Handle the POST requests at /v1/sendOTP
 		unAuthRoutes.POST(constants.SendOTP, signup.PostSendOTP)
+
+		// ========================================
+		// INTERNAL SERVICE ENDPOINTS
+		// ========================================
+		// These endpoints are for authenticated users
+		// and internal service communication
 
 		// Handle the GET requests at /v1/statusNew
 		unAuthRoutes.GET("/krakend.json", func(ctx *gin.Context) {
@@ -107,6 +100,29 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 			// send success response
 			ctx.JSON(http.StatusOK, result)
 		})
+	}
+
+	v1Routes := router.Group("v1")
+	{
+		v1Routes.Use(middleware.KecyalokMiddleware())
+
+		// Handle the GET requests at /v1/getMyDetails
+		v1Routes.GET(constants.User, signup.GetMyDetails)
+
+		// Handle the PATCH requests at /v1/users/me
+		v1Routes.PATCH(constants.User, signup.UpdateUser)
+
+		// Handle the DELETE requests at /v1/users/me
+		v1Routes.DELETE(constants.User, signup.Delete)
+
+		// Handle the PATCH requests at /v1/password
+		v1Routes.PATCH(constants.Password, password.UpdatePassword)
+
+		// Handle the POST requests at /v1/forgotPassword
+		v1Routes.POST(constants.ForgotPassword, password.ForgotPassword)
+
+		// Handle the POST requests at /v1/resetPassword
+		v1Routes.POST(constants.ResetPassword, password.ResetPassword)
 	}
 
 	return router

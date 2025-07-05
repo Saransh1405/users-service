@@ -188,7 +188,7 @@ func ErrorBasedOnResponse(ctx *gin.Context, msg string, respType int, err error)
 		SendAccountDisable(ctx, msg, constants.WLForbiddenCode, respType, err)
 
 	//404
-	case errors.New(constants.NotFoundMessage).Error(), errors.New(constants.AccountsDataNotFoundMessage).Error(), errors.New(constants.RoleNotFoundMessage).Error(), errors.New(constants.UserNotFoundMessage).Error(), errors.New(constants.CurrencyNotFoundMessage).Error(), errors.New(constants.SupportedLanguageNotFoundMessage).Error(), errors.New(constants.StateTaxNotFoundMessage).Error(), errors.New(constants.AccountTypeNotFoundMessage).Error():
+	case errors.New(constants.NotFoundMessage).Error(), errors.New(constants.InvalidPasswordMessage).Error(), errors.New(constants.InvalidResetTokenMessage).Error(), errors.New(constants.AccountsDataNotFoundMessage).Error(), errors.New(constants.RoleNotFoundMessage).Error(), errors.New(constants.UserNotFoundMessage).Error(), errors.New(constants.CurrencyNotFoundMessage).Error(), errors.New(constants.SupportedLanguageNotFoundMessage).Error(), errors.New(constants.StateTaxNotFoundMessage).Error(), errors.New(constants.AccountTypeNotFoundMessage).Error():
 		SendNoDataFoundError(ctx, msg, constants.WLNoDataFoundCode, respType, err)
 
 	//409

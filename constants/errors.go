@@ -95,6 +95,8 @@ const (
 	ErrorInConvertingPassword            = "errors.ErrorInConvertingPassword"
 	ErrorInValidatingEmail               = "errors.ErrorInValidatingEmail"
 	ErrorInValidatingPhoneNumber         = "errors.ErrorInValidatingPhoneNumber"
+	InvalidPasswordMessage               = "errors.InvalidPassword"
+	InvalidResetTokenMessage             = "errors.InvalidResetToken"
 )
 
 // Trigger Messages

@@ -34,6 +34,8 @@
         "ErrorInConvertingToObjectId": "Error in converting to object id",
         "ErrorInConvertingPassword": "Error in converting password",
         "ErrorInValidatingEmail": "Email already exists",
-        "ErrorInValidatingPhoneNumber": "Phone number already exists"
+        "ErrorInValidatingPhoneNumber": "Phone number already exists",
+        "InvalidPassword": "Incorrect old password, Please enter correct password.",
+        "InvalidResetToken": "Invalid or expired reset token."
     }
 }
