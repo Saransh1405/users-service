@@ -14,14 +14,7 @@ server :
   host: "http://localhost:8001"
   port: 8001
 
-grpc:
-  port: 9090
-  enableReflection: true
-  maxConcurrentStreams: 100
-  maxConnectionIdle: 300s
-  maxConnectionAge: 600s
-  time: 120s
-  timeout: 20s
+
 
 JWT:
  secret: "for_testing"

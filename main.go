@@ -8,7 +8,6 @@ import (
 	"syscall"
 	"users-service/api"
 	"users-service/constants"
-	"users-service/grpc"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
@@ -24,9 +23,6 @@ import (
 	"users-service/utils/httpclient"
 	loggerMiddleware "users-service/utils/logger"
 
-	// grpcLib "users-service/util/grpc"
-
-	// _ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"go.uber.org/zap"
 )
@@ -54,9 +50,8 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Start both REST and gRPC servers
+	// Start REST server
 	go startRouter(ctx)
-	go startGRPCServer(ctx)
 
 	// Wait for interrupt signal to gracefully shutdown
 	quit := make(chan os.Signal, 1)
@@ -64,24 +59,13 @@ func main() {
 	<-quit
 
 	log := logger.GetLoggerWithoutContext()
-	log.Info("Shutting down servers...")
+	log.Info("Shutting down server...")
 
 	// Cancel context to trigger graceful shutdown
 	cancel()
 
 	// Give some time for graceful shutdown
 	time.Sleep(2 * time.Second)
-}
-
-func startGRPCServer(ctx context.Context) {
-	log := logger.GetLoggerWithoutContext()
-
-	// Create and start gRPC server
-	grpcServer := grpc.NewGRPCServer()
-
-	if err := grpcServer.Start(ctx); err != nil {
-		log.With(zap.Error(err)).Error("Failed to start gRPC server")
-	}
 }
 
 func initConfigs() {
