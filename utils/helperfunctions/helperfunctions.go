@@ -8,8 +8,10 @@ import (
 	"strings"
 	"time"
 	"users-service/constants"
+	"users-service/library/kafka/notifications"
 	"users-service/library/mongoDb"
 	"users-service/logger"
+	"users-service/models"
 	"users-service/utils"
 	"users-service/utils/configs"
 	"users-service/utils/localization"
@@ -235,4 +237,24 @@ func GenerateResetToken() string {
 	b := make([]byte, 32)
 	rand.Read(b)
 	return fmt.Sprintf("%x", b)
+}
+
+func SendNotifications(payloadData map[string]interface{}, topic string) error {
+	log := logger.GetLoggerWithoutContext()
+
+	notificationData := models.Notification{
+		Type:      payloadData["type"].(string),
+		UserID:    payloadData["userId"].(string),
+		Message:   payloadData["message"].(string),
+		Data:      payloadData["data"],
+		CreatedAt: time.Now().UnixMilli(),
+	}
+
+	err := notifications.SendNotificationToKafka(&notificationData, topic)
+	if err != nil {
+		return err
+	}
+
+	log.Info("Campaign insert event published to kafka")
+	return nil
 }

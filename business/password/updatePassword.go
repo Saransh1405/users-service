@@ -7,6 +7,7 @@ import (
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/models"
+	"users-service/utils/helperfunctions"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -62,11 +63,31 @@ func UpdatePassword(ctx context.Context, request *models.UpdatePasswordRequest) 
 	}
 
 	//update the password
-	_, err = userCol.UpdateOne(ctx, bson.M{"_id": clientName}, bson.M{"$set": bson.M{"password": string(hashedPassword)}})
+	result, err := userCol.UpdateOne(ctx, bson.M{"_id": clientName}, bson.M{"$set": bson.M{"password": string(hashedPassword)}})
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.ErrorInConvertingPassword)
 		return errors.New(constants.ErrorInConvertingPassword)
 	}
+
+	go func() {
+		if result.ModifiedCount > 0 {
+			helperfunctions.SendNotifications(map[string]interface{}{
+				"type":    models.NotificationTypeEmail,
+				"userId":  user.ID,
+				"message": "Password updated successfully",
+				"data": map[string]interface{}{
+					"To":       user.Email,
+					"Message":  "Password updated successfully",
+					"Template": "password-updated",
+					"Variables": map[string]interface{}{
+						"Name":  user.FirstName + " " + user.LastName,
+						"Email": user.Email,
+					},
+					"Subject": "Password updated successfully",
+				},
+			}, string(models.NotificationTopic))
+		}
+	}()
 
 	return nil
 }

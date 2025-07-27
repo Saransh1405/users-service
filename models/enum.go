@@ -13,3 +13,18 @@ const (
 	Submitted       Status = "Submitted"
 	LoggedOut       Status = "Logged Out"
 )
+
+type NotificationTopics string
+
+const (
+	NotificationTopic NotificationTopics = "notifications"
+)
+
+// NotificationType represents the type of notification
+type NotificationType string
+
+const (
+	NotificationTypeSMS   NotificationType = "sms"
+	NotificationTypeEmail NotificationType = "email"
+	NotificationTypePush  NotificationType = "push"
+)

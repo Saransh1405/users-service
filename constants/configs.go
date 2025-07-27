@@ -2,17 +2,21 @@ package constants
 
 // config names
 const (
-	LoggerConfig        = "logger"
-	ApplicationConfig   = "application"
-	LanguageConfig      = "language"
-	MongoConfig         = "mongo"
-	VaultConfig         = "vault"
-	RedisConfig         = "redis"
-	PostgresConfig      = "postgres"
-	ImportConfig        = "import"
-	NovuConfig          = "novu"
-	AuthorizationHeader = "Authorization"
-	JWT_SECRET          = "JWT.secret"
+	LoggerConfig           = "logger"
+	ApplicationConfig      = "application"
+	LanguageConfig         = "language"
+	MongoConfig            = "mongo"
+	VaultConfig            = "vault"
+	RedisConfig            = "redis"
+	PostgresConfig         = "postgres"
+	ImportConfig           = "import"
+	NovuConfig             = "novu"
+	AuthorizationHeader    = "Authorization"
+	JWT_SECRET             = "JWT.secret"
+	KafkaConfig            = "kafka"
+	KafkaHostConfigKey     = "kafka.host"
+	KafkaUsernameConfigKey = "kafka.username"
+	KafkaPasswordConfigKey = "kafka.password"
 )
 
 // config keys

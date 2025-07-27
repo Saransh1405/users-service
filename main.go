@@ -3,11 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
 	"users-service/api"
 	"users-service/constants"
+	"users-service/library/kafka"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
@@ -28,6 +26,7 @@ import (
 )
 
 func main() {
+
 	ctx := context.Background()
 
 	// Load configuration
@@ -46,26 +45,12 @@ func main() {
 	// Connect to MongoDB
 	mongoDb.InitMongoDB()
 
-	// Create context with cancellation for graceful shutdown
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	// Connect to Kafka
+	kafka.NewConnection()
 
-	// Start REST server
-	go startRouter(ctx)
+	// Start router and Use middleware
+	startRouter(ctx)
 
-	// Wait for interrupt signal to gracefully shutdown
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-
-	log := logger.GetLoggerWithoutContext()
-	log.Info("Shutting down server...")
-
-	// Cancel context to trigger graceful shutdown
-	cancel()
-
-	// Give some time for graceful shutdown
-	time.Sleep(2 * time.Second)
 }
 
 func initConfigs() {

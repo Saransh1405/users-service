@@ -1,0 +1,30 @@
+package notifications
+
+import (
+	"encoding/json"
+	"fmt"
+	"users-service/models"
+
+	"github.com/IBM/sarama"
+)
+
+var Producer sarama.SyncProducer
+
+func SendNotificationToKafka(payloadData *models.Notification, topic string) error {
+	jsonString, err := json.Marshal(payloadData)
+	if err != nil {
+		return fmt.Errorf("failed to marshal payload data: %w", err)
+	}
+
+	msg := &sarama.ProducerMessage{
+		Topic: topic,
+		Value: sarama.StringEncoder(jsonString),
+	}
+
+	_, _, err = Producer.SendMessage(msg)
+	if err != nil {
+		return fmt.Errorf("failed to send message to kafka: %w", err)
+	}
+
+	return nil
+}

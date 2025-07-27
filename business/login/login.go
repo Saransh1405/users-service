@@ -53,5 +53,23 @@ func Login(ctx *gin.Context, request *models.LoginRequest) (*models.LoginRespons
 		ExpiresIn:   int64(expireTime),
 	}
 
+	go func() {
+		helperfunctions.SendNotifications(map[string]interface{}{
+			"type":    models.NotificationTypeEmail,
+			"userId":  user.ID,
+			"message": "User logged in successfully",
+			"data": map[string]interface{}{
+				"To":       user.Email,
+				"Message":  "User logged in successfully",
+				"Template": "login",
+				"Variables": map[string]interface{}{
+					"Name":  user.FirstName + " " + user.LastName,
+					"Email": user.Email,
+				},
+				"Subject": "Welcome back to the TribeWithVibe",
+			},
+		}, string(models.NotificationTopic))
+	}()
+
 	return &response, nil
 }

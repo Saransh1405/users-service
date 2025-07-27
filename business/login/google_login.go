@@ -59,8 +59,32 @@ func GoogleLogin(ctx *gin.Context, request *models.GoogleLoginRequest) (*models.
 		return linkGoogleAccount(ctx, &existingUser, googleUserInfo, log)
 	}
 
+	loginResponse, err := createGoogleUser(ctx, googleUserInfo, request.ClientName, log)
+	if err != nil {
+		log.With(zap.Error(err)).Error("Failed to create Google user")
+		return nil, errors.New("failed to create user account")
+	}
+
+	go func() {
+		helperfunctions.SendNotifications(map[string]interface{}{
+			"type":    models.NotificationTypeEmail,
+			"userId":  googleUserInfo.ID,
+			"message": "User logged in successfully",
+			"data": map[string]interface{}{
+				"To":       loginResponse.User.Email,
+				"Message":  "User logged in successfully",
+				"Template": "login",
+				"Variables": map[string]interface{}{
+					"Name":  loginResponse.User.FirstName + " " + loginResponse.User.LastName,
+					"Email": loginResponse.User.Email,
+				},
+				"Subject": "Welcome to the TribeWithVibe",
+			},
+		}, string(models.NotificationTopic))
+	}()
+
 	// Create new user
-	return createGoogleUser(ctx, googleUserInfo, request.ClientName, log)
+	return loginResponse, nil
 }
 
 // handleExistingGoogleUser handles login for existing Google users
