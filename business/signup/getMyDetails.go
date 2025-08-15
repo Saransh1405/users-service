@@ -7,6 +7,7 @@ import (
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/models"
+	"users-service/utils/helperfunctions"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -23,7 +24,12 @@ func GetMyDetails(ctx context.Context, request *models.GetUserRequest) (*models.
 
 	//get the user id from the context
 	client := request.ClientName
-	if client == "" {
+	//validate the client name
+	count, err := helperfunctions.ValidateUser(ctx, client)
+	if err != nil {
+		log.With(zap.Error(err)).Error("Error validating user")
+	}
+	if count {
 		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
 		return nil, 0, errors.New(constants.UserNotFoundMessage)
 	}

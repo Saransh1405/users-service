@@ -24,7 +24,13 @@ func UpdatePassword(ctx context.Context, request *models.UpdatePasswordRequest) 
 
 	//get the client name from the request
 	client := request.ClientName
-	if client == "" {
+
+	//validate the client name
+	count, err := helperfunctions.ValidateUser(ctx, client)
+	if err != nil {
+		log.With(zap.Error(err)).Error("Error validating user")
+	}
+	if count {
 		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
 		return errors.New(constants.UserNotFoundMessage)
 	}

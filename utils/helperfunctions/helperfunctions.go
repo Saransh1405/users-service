@@ -258,3 +258,24 @@ func SendNotifications(payloadData map[string]interface{}, topic string) error {
 	log.Info("Campaign insert event published to kafka")
 	return nil
 }
+
+func ValidateUser(ctx context.Context, userID string) (bool, error) {
+	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
+
+	// convert userID to ObjectID
+	userObjId, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return false, fmt.Errorf("invalid user ID format: %w", err)
+	}
+
+	if userObjId.IsZero() {
+		return false, errors.New("user ID is empty")
+	}
+	filter := bson.M{"_id": userObjId}
+	count, err := userCol.CountDocuments(ctx, filter)
+	if err != nil {
+		return false, fmt.Errorf("error checking user existence: %w", err)
+	}
+
+	return count > 0, nil
+}

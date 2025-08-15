@@ -8,6 +8,7 @@ import (
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/models"
+	"users-service/utils/helperfunctions"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -22,7 +23,12 @@ func Delete(ctx context.Context, request *models.UserDeleteRequest) error {
 	userCol := mongoDb.GetCollection(constants.MongoUserCollection)
 
 	clientName := request.ClientName
-	if clientName == "" {
+	//validate the client name
+	count, err := helperfunctions.ValidateUser(ctx, clientName)
+	if err != nil {
+		log.With(zap.Error(err)).Error("Error validating user")
+	}
+	if count {
 		log.With(zap.Error(errors.New(constants.UserNotFoundMessage))).Error(constants.UserNotFoundMessage)
 		return errors.New(constants.UserNotFoundMessage)
 	}
