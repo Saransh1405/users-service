@@ -7,7 +7,6 @@ import (
 	"users-service/constants"
 	"users-service/library/mongoDb"
 	"users-service/models"
-	"users-service/utils/helperfunctions"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
@@ -55,30 +54,30 @@ func ResetPassword(ctx context.Context, request *models.ResetPasswordRequest) er
 		},
 	}
 
-	result, err := userCol.UpdateOne(ctx, bson.M{"_id": user.ID}, update)
+	_, err = userCol.UpdateOne(ctx, bson.M{"_id": user.ID}, update)
 	if err != nil {
 		return err
 	}
 
-	go func() {
-		if result.ModifiedCount > 0 {
-			helperfunctions.SendNotifications(map[string]interface{}{
-				"type":    models.NotificationTypeEmail,
-				"userId":  user.ID,
-				"message": "Password reset successfully",
-				"data": map[string]interface{}{
-					"To":       user.Email,
-					"Message":  "Password reset successfully",
-					"Template": "password-reset",
-					"Variables": map[string]interface{}{
-						"Name":  user.FirstName + " " + user.LastName,
-						"Email": user.Email,
-					},
-					"Subject": "Password reset successfully",
-				},
-			}, string(models.NotificationTopic))
-		}
-	}()
+	// go func() {
+	// 	if result.ModifiedCount > 0 {
+	// 		helperfunctions.SendNotifications(map[string]interface{}{
+	// 			"type":    models.NotificationTypeEmail,
+	// 			"userId":  user.ID,
+	// 			"message": "Password reset successfully",
+	// 			"data": map[string]interface{}{
+	// 				"To":       user.Email,
+	// 				"Message":  "Password reset successfully",
+	// 				"Template": "password-reset",
+	// 				"Variables": map[string]interface{}{
+	// 					"Name":  user.FirstName + " " + user.LastName,
+	// 					"Email": user.Email,
+	// 				},
+	// 				"Subject": "Password reset successfully",
+	// 			},
+	// 		}, string(models.NotificationTopic))
+	// 	}
+	// }()
 
 	return err
 }

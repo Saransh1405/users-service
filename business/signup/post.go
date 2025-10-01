@@ -132,30 +132,30 @@ func Post(ctx *gin.Context, request *models.UserPostRequest) (*models.Users, err
 	}
 
 	//insert the user into the collection
-	result, err := userCol.InsertOne(ctx, user)
+	_, err = userCol.InsertOne(ctx, user)
 	if err != nil {
 		log.With(zap.Error(errors.New(constants.ErrorInInertingData))).Error(constants.ErrorInInertingData)
 		return nil, errors.New(constants.ErrorInInertingData)
 	}
 
-	go func() {
-		if result.InsertedID != nil {
-			helperfunctions.SendNotifications(map[string]interface{}{
-				"type":    models.NotificationTypeEmail,
-				"userId":  result.InsertedID,
-				"message": "User signed up successfully",
-				"data": map[string]interface{}{
-					"To":       user.Email,
-					"Message":  "User signed up successfully",
-					"Template": "signup",
-					"Variables": map[string]interface{}{
-						"Name": user.FirstName + " " + user.LastName,
-					},
-					"Subject": "Welcome to the TribeWithVibe",
-				},
-			}, string(models.NotificationTopic))
-		}
-	}()
+	// go func() {
+	// 	if result.InsertedID != nil {
+	// 		helperfunctions.SendNotifications(map[string]interface{}{
+	// 			"type":    models.NotificationTypeEmail,
+	// 			"userId":  result.InsertedID,
+	// 			"message": "User signed up successfully",
+	// 			"data": map[string]interface{}{
+	// 				"To":       user.Email,
+	// 				"Message":  "User signed up successfully",
+	// 				"Template": "signup",
+	// 				"Variables": map[string]interface{}{
+	// 					"Name": user.FirstName + " " + user.LastName,
+	// 				},
+	// 				"Subject": "Welcome to the TribeWithVibe",
+	// 			},
+	// 		}, string(models.NotificationTopic))
+	// 	}
+	// }()
 
 	return &user, err
 }

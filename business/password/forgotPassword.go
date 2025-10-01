@@ -61,32 +61,32 @@ func ForgotPassword(ctx context.Context, request *models.ForgotPasswordRequest) 
 		},
 	}
 
-	result, err := userCol.UpdateOne(ctx, bson.M{"_id": user.ID}, update)
+	_, err = userCol.UpdateOne(ctx, bson.M{"_id": user.ID}, update)
 	if err != nil {
 		return err
 	}
 
 	// 4. Send reset email
-	go func() {
-		if result.MatchedCount > 0 {
-			helperfunctions.SendNotifications(map[string]interface{}{
-				"type":    models.NotificationTypeEmail,
-				"userId":  user.ID,
-				"message": "Password reset request",
-				"data": map[string]interface{}{
-					"To":       user.Email,
-					"Message":  "Password reset request",
-					"Template": "password-reset",
-					"Variables": map[string]interface{}{
-						"Name":   user.FirstName + " " + user.LastName,
-						"Email":  user.Email,
-						"Expire": time.Now().Add(15 * time.Minute).UnixMilli(),
-					},
-					"Subject": "Password reset request",
-				},
-			}, string(models.NotificationTopic))
-		}
-	}()
+	// go func() {
+	// 	if result.MatchedCount > 0 {
+	// 		helperfunctions.SendNotifications(map[string]interface{}{
+	// 			"type":    models.NotificationTypeEmail,
+	// 			"userId":  user.ID,
+	// 			"message": "Password reset request",
+	// 			"data": map[string]interface{}{
+	// 				"To":       user.Email,
+	// 				"Message":  "Password reset request",
+	// 				"Template": "password-reset",
+	// 				"Variables": map[string]interface{}{
+	// 					"Name":   user.FirstName + " " + user.LastName,
+	// 					"Email":  user.Email,
+	// 					"Expire": time.Now().Add(15 * time.Minute).UnixMilli(),
+	// 				},
+	// 				"Subject": "Password reset request",
+	// 			},
+	// 		}, string(models.NotificationTopic))
+	// 	}
+	// }()
 
 	return nil
 }
