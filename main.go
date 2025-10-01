@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"users-service/api"
 	"users-service/constants"
-	"users-service/library/kafka"
 	"users-service/library/mongoDb"
 	"users-service/logger"
 	"users-service/utils"
@@ -45,8 +44,8 @@ func main() {
 	// Connect to MongoDB
 	mongoDb.InitMongoDB()
 
-	// Connect to Kafka
-	kafka.NewConnection()
+	// // Connect to Kafka
+	// kafka.NewConnection()
 
 	// Start router and Use middleware
 	startRouter(ctx)

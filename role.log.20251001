@@ -1,0 +1,4 @@
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb://localhost:27017."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb+srv://GoFood:chiya123@cluster0.3ekrpok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0."}
+{"level":"INFO","time":"time.UnixDate","method":"users-service/library/mongoDb.NewConnection","msg":"Connected to MONGODB_URL : mongodb+srv://GoFood:chiya123@cluster0.3ekrpok.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0."}

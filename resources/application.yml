@@ -24,7 +24,7 @@ otp:
   templateID: "686553c7d6fc0555764f4211"
 
 kafka:
-  host: "localhost:9093"
+  host: "kafka:9092"
   username: ""
   password: ""
 
