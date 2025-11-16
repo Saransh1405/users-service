@@ -124,6 +124,25 @@ func SendConflict(ctx *gin.Context, code, msg string, respType int, data interfa
 	})
 }
 
+func SendStatusWithData(ctx *gin.Context, respType int, msg string, data interface{}, total int64) {
+	ctx.JSON(http.StatusOK, genericModel.APIResponse{
+		Status:  constants.APIRespSuccessKey,
+		Message: msg,
+		Data:    getData(respType, data),
+		Total:   total,
+	})
+}
+
+func SendNoContentError(ctx *gin.Context, msg, code string, respType int, err error) {
+	data := getData(respType, nil)
+	ctx.JSON(http.StatusNoContent, genericModel.APIResponse{
+		Status:    constants.APIRespErrorKey,
+		Message:   msg,
+		ErrorCode: code,
+		Data:      data,
+	})
+}
+
 func SendStatusOK(ctx *gin.Context, respType int, msg string, data interface{}) {
 	ctx.JSON(http.StatusOK, genericModel.APIResponse{
 		Status:  constants.APIRespSuccessKey,
@@ -176,8 +195,17 @@ func ErrorBasedOnResponse(ctx *gin.Context, msg string, respType int, err error)
 		SendInternalServerError(ctx, msg, constants.WLInternalServerErrorCode, respType, err)
 
 	//400
-	case errors.New(constants.BadRequestMessage).Error(), errors.New(constants.PasswordDoesNotMatchMessage).Error(), errors.New(constants.OldPasswordAndNewPasswordSameMessage).Error(), errors.New(constants.BusinessIdIsRequiredMessage).Error(), errors.New(constants.BrandIdIsRequiredMessage).Error(), errors.New(constants.ErrorInInertingData).Error(), errors.New(constants.ErrorInGettingData).Error(), errors.New(constants.ErrorInConvertingToObjectId).Error(), errors.New(constants.ErrorInConvertingPassword).Error():
-		SendBadRequest(ctx, msg, constants.WLBadRequestCode, respType, err)
+	case errors.New(constants.BadRequestMessage).Error(), errors.New(constants.PasswordDoesNotMatchMessage).Error(),
+		errors.New(constants.OldPasswordAndNewPasswordSameMessage).Error(), errors.New(constants.BusinessIdIsRequiredMessage).Error(), errors.New(constants.BrandIdIsRequiredMessage).Error(),
+		errors.New(constants.InvalidStartDateMessage).Error(), errors.New(constants.InvalidEndDateMessage).Error(), errors.New(constants.EndDateBeforeStartDateMessage).Error(),
+		errors.New(constants.MaxParticipantsLessThanMinParticipants).Error(),
+		errors.New(constants.PriceMustBeGreaterThanZero).Error(),
+		errors.New(constants.FailedToFetchCampaignsMessage).Error(),
+		errors.New(constants.UserNotVerifiedMessage).Error(),
+		errors.New(constants.CampaignFullMessage).Error(),
+		errors.New(constants.UserNotParticipantMessage).Error(),
+		errors.New(constants.FailedToUpdateParticipantStatusMessage).Error(),
+		errors.New(constants.UserAlreadyInCampaignMessage).Error():
 
 	//401
 	case errors.New(constants.UnauthorizedMessage).Error(), errors.New(constants.InvalidOldPasswordMessage).Error(), errors.New(constants.InvalidOTPMessage).Error():

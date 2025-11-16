@@ -66,4 +66,9 @@ const (
 	LeaveTypes                         = "/leaveTypes"
 	LeaveTypesWithId                   = "/leaveTypes/:id"
 	DocumentsForEnlistingWithAccountId = "/documentsForEnlisting/:businessId"
+	Campaign                           = "/campaign"
+	CampaignNearby                     = "/campaign/nearby"
+	CampaignJoin                       = "/campaign/join"
+	CampaignLeave                      = "/campaign/leave"
+	CampaignAccept                     = "/campaign/accept"
 )

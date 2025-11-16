@@ -11,20 +11,39 @@ const (
 	Rejected        Status = "Rejected"
 	Approved        Status = "Approved"
 	Submitted       Status = "Submitted"
-	LoggedOut       Status = "Logged Out"
 )
 
-type NotificationTopics string
+type CampaignStatus string
 
+// Campaign status constants
 const (
-	NotificationTopic NotificationTopics = "notifications"
+	CampaignStatusDraft     CampaignStatus = "draft"
+	CampaignStatusActive    CampaignStatus = "active"
+	CampaignStatusCompleted CampaignStatus = "completed"
+	CampaignStatusCancelled CampaignStatus = "cancelled"
+	CampaignStatusFull      CampaignStatus = "full"
 )
 
-// NotificationType represents the type of notification
-type NotificationType string
+type ParticipantStatus string
+
+// Participant status constants
+const (
+	ParticipantStatusPending  ParticipantStatus = "pending"
+	ParticipantStatusActive   ParticipantStatus = "active"
+	ParticipantStatusLeft     ParticipantStatus = "left"
+	ParticipantStatusRejected ParticipantStatus = "rejected"
+)
+
+type CampaignEventType string
 
 const (
-	NotificationTypeSMS   NotificationType = "sms"
-	NotificationTypeEmail NotificationType = "email"
-	NotificationTypePush  NotificationType = "push"
+	CreateCampaignEvent CampaignEventType = "create_campaign"
+	UpdateCampaignEvent CampaignEventType = "update_campaign"
+	DeleteCampaignEvent CampaignEventType = "delete_campaign"
+)
+
+type CampaignActivityType string
+
+const (
+	CampaignActivity CampaignActivityType = "campaign_activity"
 )

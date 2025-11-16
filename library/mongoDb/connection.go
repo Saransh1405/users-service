@@ -26,7 +26,7 @@ var Client *Connection
 
 // NewConnection - new connection of amqp
 func NewConnection(mongoDatabase, mongoUrl string) error {
-	log := logger.GetLoggerWithoutContext() 
+	log := logger.GetLoggerWithoutContext()
 
 	if mongoUrl == "" || mongoDatabase == "" {
 		return errors.New("COnfiguration is missing for mongodb")

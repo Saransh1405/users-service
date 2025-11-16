@@ -5,3 +5,4 @@ dbname: cordelia
 port: 5432
 sslmode: disable
 timeZone: Asia/Kolkata
+neondb: new

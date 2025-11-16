@@ -44,7 +44,7 @@ func Logout(ctx context.Context, request *models.GetUserRequest) error {
 
 	update := bson.M{
 		"$set": bson.M{
-			"status": models.LoggedOut,
+			"status": "LOGGET_OUT",
 		},
 		"$push": bson.M{
 			"statusLogs": bson.M{

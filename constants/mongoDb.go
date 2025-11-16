@@ -7,6 +7,8 @@ const (
 	MongoAPIKeyMetadataCollection           = "apiKeyMetadata"
 	MongoAPIUsagesCollection                = "apiUsages"
 	MongoTimeout                            = 30
+	MongoUrl                                = ""
+	MongoDatabase                           = ""
 )
 
 // MongoDB constants

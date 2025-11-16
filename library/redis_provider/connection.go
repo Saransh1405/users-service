@@ -3,6 +3,7 @@ package redis_provider
 import (
 	"context"
 	"errors"
+	"fmt"
 	"users-service/constants"
 	"users-service/logger"
 	"users-service/utils/configs"
@@ -16,20 +17,33 @@ var Client *redis.Client
 var RatePerMinute int = 2 // Rate per minute Default to 2
 
 func NewConnection(ctx context.Context, log logger.Logger) error {
-
-	RedisConfig, err := configs.Get(constants.RedisConfig)
-
+	// get application configs
+	applicationConfig, err := configs.Get(constants.ApplicationConfig)
 	if err != nil {
 		log.With(zap.Error(err)).Error(constants.BindingFailedErrr)
 	}
 
-	redisUrl := RedisConfig.GetString(constants.RedisUrlKey)
-	RatePerMinute = RedisConfig.GetInt(constants.RedisRatePerMinute)
+	// RedisConfig := applicationConfig.Get(constants.RedisConfig)
+
+	redisUrl := applicationConfig.GetString(constants.RedisUrlKey)
 	if redisUrl == "" {
-		return errors.New("configuration is missing for redis")
+		redisUrl = "redis:6379"
+	}
+	RatePerMinute = applicationConfig.GetInt(constants.RedisRatePerMinute)
+	if RatePerMinute == 0 {
+		RatePerMinute = 2
 	}
 
-	opt, _ := redis.ParseURL(redisUrl)
+	opt, err := redis.ParseURL(redisUrl)
+	if err != nil {
+		log.Error("Failed to parse Redis URL", zap.Error(err), zap.String("redisUrl", redisUrl))
+		return fmt.Errorf("failed to parse Redis URL: %w", err)
+	}
+
+	if opt == nil {
+		log.Error("Redis options are nil after parsing URL", zap.String("redisUrl", redisUrl))
+		return errors.New("Redis options are nil after parsing URL")
+	}
 
 	Client = redis.NewClient(opt)
 

@@ -6,6 +6,8 @@ import (
 	"users-service/api"
 	"users-service/constants"
 	"users-service/library/mongoDb"
+	"users-service/library/postgres"
+	"users-service/library/redis_provider"
 	"users-service/logger"
 	"users-service/utils"
 
@@ -40,12 +42,20 @@ func main() {
 
 	// setup http client
 	initHTTPClient()
+	// Connect a postgres
+	postgres.InitPostgresDB(ctx)
+
+	// Connect a kafka
+	// kafka.NewConnection()
 
 	// Connect to MongoDB
 	mongoDb.InitMongoDB()
 
-	// // Connect to Kafka
-	// kafka.NewConnection()
+	// Connect a redis
+	err := redis_provider.NewConnection(ctx, logger.GetLoggerWithoutContext())
+	if err != nil {
+		logger.GetLoggerWithoutContext().With(zap.Error(err)).Error(constants.ExternalServiceFailureError)
+	}
 
 	// Start router and Use middleware
 	startRouter(ctx)

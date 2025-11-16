@@ -2,6 +2,9 @@ package kafka
 
 import (
 	"fmt"
+	"log"
+	"users-service/library/kafka/activity"
+	"users-service/library/kafka/campaign"
 	"users-service/library/kafka/notifications"
 
 	"github.com/IBM/sarama"
@@ -23,7 +26,27 @@ func Connect(brokerList []string, KafkaUsername, KafkaPassword string) error {
 		config.Net.SASL.Enable = false
 	}
 
-	// Create notification producer
+	// Create campaign producer
+	createCampaignProducer, err := sarama.NewSyncProducer(brokerList, config)
+	if err != nil {
+		log.Fatalf("Failed to create campaign producer: %v", err)
+	}
+	campaign.Producer = createCampaignProducer
+
+	// Create update campaign producer
+	updateCampaignProducer, err := sarama.NewSyncProducer(brokerList, config)
+	if err != nil {
+		log.Fatalf("Failed to create update campaign producer: %v", err)
+	}
+	campaign.Producer = updateCampaignProducer
+
+	// Create campaign activity producer
+	campaignActivityProducer, err := sarama.NewSyncProducer(brokerList, config)
+	if err != nil {
+		log.Fatalf("Failed to create campaign activity producer: %v", err)
+	}
+	activity.ActivityProducer = campaignActivityProducer
+
 	NotificationProducer, err := sarama.NewSyncProducer(brokerList, config)
 	if err != nil {
 		return fmt.Errorf("failed to create producer: %w", err)
@@ -33,6 +56,18 @@ func Connect(brokerList []string, KafkaUsername, KafkaPassword string) error {
 	// Start consumers in background
 	config.Consumer.Group.Rebalance.Strategy = sarama.NewBalanceStrategyRange()
 	config.Consumer.Offsets.Initial = sarama.OffsetNewest
+
+	go func() {
+		// Start Campaign Kafka consumers
+		if err := campaign.StartConsumers(brokerList, config); err != nil {
+			log.Printf("Error starting campaign consumers: %v", err)
+		}
+
+		// Start campaign activity consumers
+		if err := activity.StartActivityConsumer(brokerList, config); err != nil {
+			log.Printf("Error starting campaign activity consumers: %v", err)
+		}
+	}()
 
 	return nil
 }

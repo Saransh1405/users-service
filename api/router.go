@@ -6,7 +6,11 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"users-service/api/accept"
+	"users-service/api/campaign"
+	"users-service/api/join"
 	"users-service/api/login"
+	"users-service/api/nearby"
 	"users-service/api/password"
 	"users-service/api/signup"
 	"users-service/constants"
@@ -123,6 +127,27 @@ func GetRouter(localizationMiddleware gin.HandlerFunc, loggerMiddleware gin.Hand
 
 		// Handle the POST requests at /v1/resetPassword
 		v1Routes.POST(constants.ResetPassword, password.ResetPassword)
+
+		// Handle the POST requests at /v1/campaign
+		v1Routes.POST(constants.Campaign, campaign.CreateCampaign)
+
+		// Handle the PATCH requests at /v1/campaign
+		v1Routes.PATCH(constants.Campaign, campaign.UpdateCampaign)
+
+		// Handle the GET requests at /v1/campaign
+		v1Routes.GET(constants.Campaign, campaign.GetCampaign)
+
+		// Handle the GET requests at /v1/campaign/nearby
+		v1Routes.GET(constants.CampaignNearby, nearby.GetCampaign)
+
+		// Handle the PATCH requests at /v1/campaign/join
+		v1Routes.PATCH(constants.CampaignJoin, join.JoinCampaign)
+
+		// Handle the PATCH requests at /v1/campaign/leave
+		v1Routes.PATCH(constants.CampaignLeave, join.LeaveCampaign)
+
+		// Handle the PATCH requests at /v1/campaign/accept
+		v1Routes.PATCH(constants.CampaignAccept, accept.AcceptCampaign)
 	}
 
 	return router
